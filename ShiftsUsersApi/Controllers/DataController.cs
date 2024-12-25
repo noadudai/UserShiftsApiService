@@ -16,7 +16,8 @@ namespace ShiftsUsersApi.Controllers
         }
         
         [HttpGet("{data}")]
-        [Authorize]
+        [Authorize] 
+        // Authorization: Bearer <token>: extract the token & validate against the options.Authority options.Audience 
         public IActionResult PrintData(string data)
         {
             _outputDataService.OutputData(data);

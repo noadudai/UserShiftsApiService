@@ -1,6 +1,8 @@
 using ShiftsUsersApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,7 @@ var configuration = builder.Configuration;
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
-    options.Authority = configuration["Auth0Authority"];
+    options.Authority = configuration["Auth0DomainAuthority"];
     options.Audience = configuration["Auth0Audience"];
 });
 
