@@ -1,13 +1,21 @@
 using ShiftsUsersApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShiftsUsersApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
 builder.Services.AddSingleton<IOutputDataService, OutputDataService>();
-builder.Services.AddScoped<IGreetingService, GreetingService>();
+builder.Services.AddSingleton<IGreetingService, GreetingService>();
+builder.Services.AddScoped<ISaveNewEmployeeService, SaveNewEmployeeService>();
 builder.Services.AddControllers();
 
 var configuration = builder.Configuration;
@@ -24,7 +32,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFront", policy =>
     {
-        policy.WithOrigins(configuration["FrontUrl"]).AllowAnyHeader().AllowCredentials();
+        policy.WithOrigins(configuration["FrontUrl"]).AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials().
+            AllowCredentials();
     });
 });
 

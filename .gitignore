@@ -134,3 +134,7 @@ ShiftsUsersApi/.idea/
 ShiftsUsersApi/appsettings.Development.json
 
 ShiftsUsersApi/appsettings.json
+
+ShiftsUsersApi/node_modules/
+
+ShiftsUsersApi/.vs/
