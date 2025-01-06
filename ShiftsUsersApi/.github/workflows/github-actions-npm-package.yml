@@ -1,10 +1,14 @@
 ﻿name: Build and publish npm package
 
-on: push
+on:
+  push:
+    branches:
+      - '*'
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  
 jobs:
   generate-npm-package:
     runs-on: ubuntu-latest
