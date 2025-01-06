@@ -18,6 +18,8 @@ builder.Services.AddSingleton<IGreetingService, GreetingService>();
 builder.Services.AddScoped<ISaveNewEmployeeService, SaveNewEmployeeService>();
 builder.Services.AddControllers();
 
+builder.Services.AddOpenApi();
+
 var configuration = builder.Configuration;
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -45,5 +47,6 @@ app.UseCors("AllowFront");
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapOpenApi();
 
 app.Run();

@@ -37,9 +37,9 @@ namespace ShiftsUsersApi.Controllers
             var sub = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = await client.Users.GetAsync(sub);
 
-            await using var db = new ShiftsSchedulingContext();
+            //await using var db = new ShiftsSchedulingContext();
 
-            var userFromDb = db.Users.OrderBy(u => u.Username).First();
+            //var userFromDb = db.Users.OrderBy(u => u.Email).First();
             
             return Ok($"Data printed: {data}");
         }
