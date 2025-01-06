@@ -21,5 +21,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include=".github\workflows\github-actions-npm-package-test.yml" />
+  </ItemGroup>
+
 </Project>
 
