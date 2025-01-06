@@ -4,19 +4,11 @@ on:
   push:
     branches:
       - '*'
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
   
 jobs:
   generate-npm-package:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
