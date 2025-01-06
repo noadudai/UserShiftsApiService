@@ -12,4 +12,9 @@ public class ShiftsSchedulingContext : DbContext
         : base(options)
     {
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShiftsSchedulingContext).Assembly);
+    }
 }
