@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include=".github\workflows\github-actions-npm-package.yml" />
+    <Content Include=".github\workflows\github-actions-npm-package-test.yml" />
   </ItemGroup>
 
 </Project>
