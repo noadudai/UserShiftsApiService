@@ -1,7 +1,7 @@
-﻿name: Build and publish npm package
+name: Build and publish npm package
 
 on: push
-  
+
 jobs:
   generate-npm-package:
     runs-on: ubuntu-latest
@@ -9,13 +9,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 16
           registry-url: 'https://npm.pkg.github.com'
-          
+
       - name: Generate nmp package to any branch
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,7 +35,7 @@ jobs:
           cd generated-client/
           
            jq '.repository.url = "https://github.com/noadudai/UserShiftsApiService"' package.json 
-                    
+          
           npm install 
           npm run build
           npm publish
