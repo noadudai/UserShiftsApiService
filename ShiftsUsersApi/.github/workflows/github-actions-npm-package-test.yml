@@ -22,17 +22,19 @@ jobs:
         if: ${{ github.ref_name != 'master' }}
         run: |
           NPM_PACKAGE_VER=${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}
+          
           sudo apt-get update
           sudo apt-get install jq -y
-          docker run --rm ${{ steps.meta.outputs.tags }} python ./generate_openapi.py > openapi.json
           
           npx @openapitools/openapi-generator-cli generate -i http://localhost:5210/openapi/v1.json \
           -g typescript-axios \
           --additional-properties=npmName=@noadudai/microserviceservertest \
-          --additional-properties=npmVersion=1.0.0 \
+          --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
           -o ./generated-client
           
-          cd api-npm/
+          cd generated-client/
+          
+           jq '.repository.url = "https://github.com/noadudai/UserShiftsApiService"' package.json 
                     
           npm install 
           npm run build

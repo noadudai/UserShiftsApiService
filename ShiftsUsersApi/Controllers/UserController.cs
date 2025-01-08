@@ -31,6 +31,7 @@ namespace ShiftsUsersApi.Controllers
             var sub = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = await _dbContext.Users.SingleAsync(u => u.AuthSub == sub);
             
+            Console.WriteLine(user.Id);
             return Ok(user.Id);
 
         }
