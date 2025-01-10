@@ -138,3 +138,5 @@ ShiftsUsersApi/appsettings.json
 ShiftsUsersApi/node_modules/
 
 ShiftsUsersApi/.vs/
+
+ShiftsUsersApi/ShiftsUsersApi.csproj
