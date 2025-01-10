@@ -23,7 +23,6 @@ jobs:
 
       - name: Build ASP.NET Core Project
         run: |
-          dotnet restore
           dotnet build
 
       - name: Generate nmp package to any branch
