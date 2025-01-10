@@ -23,6 +23,7 @@ jobs:
 
       - name: Build ASP.NET Core Project
         run: |
+          ls ./ShiftsUsersApi/
           cd ShiftsUsersApi/
           ls
           dotnet build
