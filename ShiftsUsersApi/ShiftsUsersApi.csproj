@@ -5,8 +5,10 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <UserSecretsId>6812be60-b4a2-43b7-8921-52c72d1b8b29</UserSecretsId>
+  </PropertyGroup>
+  <PropertyGroup>
     <GenerateOpenApiDocuments>true</GenerateOpenApiDocuments>
-    <OpenApiDocumentsDirectory>./ShiftsUsersApi/</OpenApiDocumentsDirectory>
+    <OpenApiDocumentsDirectory>./</OpenApiDocumentsDirectory>
     <OpenApiGenerateDocumentsOptions>--file-name my-open-api</OpenApiGenerateDocumentsOptions>
   </PropertyGroup>
 
