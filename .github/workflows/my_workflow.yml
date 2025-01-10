@@ -23,7 +23,7 @@ jobs:
 
       - name: Build ASP.NET Core Project
         run: |
-          ls
+          cd ShiftsUsersApi/
           dotnet build
 
       - name: Generate nmp package to any branch
