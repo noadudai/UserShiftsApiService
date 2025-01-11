@@ -31,12 +31,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ github.ref_name != 'master' }}
         run: |
+          cd ShiftsUsersApi/
           NPM_PACKAGE_VER=${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}
           
           sudo apt-get update
           sudo apt-get install jq -y
-          
-          ls
           
           npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
           -g typescript-axios \
