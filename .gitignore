@@ -1,6 +1,6 @@
 
 .idea/
 
-UserShiftsApiService/UserShiftsApiService/bin/
+**/bin/
 
-UserShiftsApiService/UserShiftsApiService/obj/
+**/obj/
