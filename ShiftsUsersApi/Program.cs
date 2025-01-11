@@ -42,11 +42,13 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 app.UseCors("AllowFront");
 app.UseSwagger();
+
 app.UseSwaggerUI();
 
 app.UseAuthorization();

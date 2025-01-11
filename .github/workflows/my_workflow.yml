@@ -23,9 +23,6 @@ jobs:
 
       - name: Build ASP.NET Core Project
         run: |
-          ls ./ShiftsUsersApi/
-          cd ShiftsUsersApi/
-          ls
           dotnet build
 
       - name: Generate nmp package to any branch
@@ -38,7 +35,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install jq -y
           
-          npx @openapitools/openapi-generator-cli generate -i ./my-open-api.json \
+          npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
           -g typescript-axios \
           --additional-properties=npmName=@noadudai/microserviceservertest \
           --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
