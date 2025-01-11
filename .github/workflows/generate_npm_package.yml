@@ -27,52 +27,52 @@ jobs:
           
           dotnet build
 
-     - name: Generate nmp package to master
-       env:
-         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       if: ${{ github.ref_name == 'master' }}
-       run: |
-         cd UserShiftsApiService/UserShiftsApiService/
-         NPM_PACKAGE_VER=${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}
+      - name: Generate nmp package to master
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ github.ref_name == 'master' }}
+        run: |
+          cd UserShiftsApiService/UserShiftsApiService/
+          NPM_PACKAGE_VER=${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}
          
-         sudo apt-get update
-         sudo apt-get install jq -y
+          sudo apt-get update
+          sudo apt-get install jq -y
          
-         npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
-         -g typescript-axios \
-         --additional-properties=npmName=@noadudai/microserviceserverclient \
-         --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
-         -o ./generated-client
-         
-         cd generated-client/
-         
-          jq '.repository.url = "https://github.com/noadudai/UserShiftsApiService"' package.json 
-         
-         npm install 
-         npm run build
-         npm publish
+          npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
+          -g typescript-axios \
+          --additional-properties=npmName=@noadudai/microserviceserverclient \
+          --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
+          -o ./generated-client
+          
+          cd generated-client/
+          
+           jq '.repository.url = "https://github.com/noadudai/UserShiftsApiService"' package.json 
+          
+          npm install 
+          npm run build
+          npm publish
      
-     - name: Generate nmp package to any branch
-       env:
-         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       if: ${{ github.ref_name != 'master' }}
-       run: |
-         cd UserShiftsApiService/UserShiftsApiService/
-         NPM_PACKAGE_VER=${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}
-         
-         sudo apt-get update
-         sudo apt-get install jq -y
-         
-         npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
-         -g typescript-axios \
-         --additional-properties=npmName=@noadudai/microserviceservertest \
-         --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
-         -o ./generated-client
-         
-         cd generated-client/
-         
-          jq '.repository.url = "https://github.com/noadudai/UserShiftsApiService"' package.json 
-         
-         npm install 
-         npm run build
-         npm publish
+      - name: Generate nmp package to any branch
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ github.ref_name != 'master' }}
+        run: |
+          cd UserShiftsApiService/UserShiftsApiService/
+          NPM_PACKAGE_VER=${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}
+          
+          sudo apt-get update
+          sudo apt-get install jq -y
+          
+          npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
+          -g typescript-axios \
+          --additional-properties=npmName=@noadudai/microserviceservertest \
+          --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
+          -o ./generated-client
+          
+          cd generated-client/
+          
+           jq '.repository.url = "https://github.com/noadudai/UserShiftsApiService"' package.json 
+          
+          npm install 
+          npm run build
+          npm publish
