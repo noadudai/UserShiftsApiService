@@ -36,6 +36,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install jq -y
           
+          ls
+          
           npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
           -g typescript-axios \
           --additional-properties=npmName=@noadudai/microserviceservertest \
