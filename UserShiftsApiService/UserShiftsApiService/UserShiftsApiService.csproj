@@ -4,6 +4,10 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>disable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
+        <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)</OpenApiDocumentsDirectory>
+        <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
+        <OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
+        <OpenApiGenerateDocumentsOptions>--file-name openapi</OpenApiGenerateDocumentsOptions>
     </PropertyGroup>
 
     <ItemGroup>
