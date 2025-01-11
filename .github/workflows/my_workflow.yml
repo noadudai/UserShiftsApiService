@@ -1,0 +1,53 @@
+name: Build and publish npm package
+
+on: push
+
+jobs:
+  generate-npm-package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0'
+
+      - name: Build ASP.NET Core Project
+        run: |
+          cd ShiftsUsersApi/
+          dotnet build
+
+      - name: Generate nmp package to any branch
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ github.ref_name != 'master' }}
+        run: |
+          cd ShiftsUsersApi/
+          NPM_PACKAGE_VER=${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}
+          
+          sudo apt-get update
+          sudo apt-get install jq -y
+          
+          npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
+          -g typescript-axios \
+          --additional-properties=npmName=@noadudai/microserviceservertest \
+          --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
+          -o ./generated-client
+          
+          cd generated-client/
+          
+           jq '.repository.url = "https://github.com/noadudai/UserShiftsApiService"' package.json 
+          
+          npm install 
+          npm run build
+          npm publish
+          
