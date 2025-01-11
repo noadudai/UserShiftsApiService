@@ -1,3 +1,4 @@
+using System.Reflection;
 using ShiftsUsersApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -30,23 +31,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddCors(options =>
+if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
 {
-    options.AddPolicy("AllowFront", policy =>
+    builder.Services.AddCors(options =>
     {
-        policy.WithOrigins(configuration["FrontUrl"]).AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials().
-            AllowCredentials();
+        options.AddPolicy("AllowFront", policy =>
+        {
+            policy.WithOrigins(configuration["FrontUrl"]).AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials().
+                AllowCredentials();
+        });
     });
-});
+}
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors("AllowFront");
+if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
+{
+    app.UseCors("AllowFront");
+}
+
 app.UseSwagger();
 
 app.UseSwaggerUI();
@@ -55,6 +63,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapOpenApi();
-
 
 app.Run();
