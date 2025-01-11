@@ -13,6 +13,7 @@ builder.Services.AddOpenApi();
 
 var configuration = builder.Configuration;
 
+// Restrict the code paths that will run when the apps entry point is being invoked from build-time document generation.
 if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
 {
     builder.Services.AddCors(options =>
