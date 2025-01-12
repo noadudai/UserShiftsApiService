@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,11 +16,21 @@ builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
 });
 
 builder.Services.AddSingleton<IGreetingService, GreetingService>();
+builder.Services.AddScoped<ISaveNewEmployeeService, SaveNewEmployeeService>();
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
 
 var configuration = builder.Configuration;
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.Authority = builder.Configuration["Auth0:Domain"];
+    options.Audience = builder.Configuration["Auth0:Audience"];
+    options.RequireHttpsMetadata = false;
+});
+
+builder.Services.AddAuthorization();
 
 // Restrict the code paths that will run when the apps entry point is being invoked from build-time document generation.
 if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
@@ -35,8 +46,6 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
         });
     });
 }
-
-builder.Services.AddSwaggerGen();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -55,6 +64,8 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseAuthorization();
 
 app.MapControllers();
 app.MapOpenApi();
