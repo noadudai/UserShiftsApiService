@@ -16,7 +16,7 @@ builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
 });
 
 builder.Services.AddSingleton<IGreetingService, GreetingService>();
-builder.Services.AddScoped<ISaveNewEmployeeService, SaveNewEmployeeService>();
+builder.Services.AddScoped<ISaveNewEmployeeFromAuth0Service, SaveNewEmployeeFromAuth0Service>();
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
