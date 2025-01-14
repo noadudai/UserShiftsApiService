@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UserShiftsApiService.ActionFilters;
 using UserShiftsApiService.Models;
 using UserShiftsApiService.Services;
 
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
 
 builder.Services.AddSingleton<IGreetingService, GreetingService>();
 builder.Services.AddScoped<ISaveNewEmployeeFromAuth0Service, SaveNewEmployeeFromAuth0Service>();
+builder.Services.AddScoped<RequireHmacSignatureFilter>();
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
