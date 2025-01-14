@@ -11,14 +11,14 @@ namespace UserShiftsApiService.Controllers;
 
 
 [ApiController]
-[Route("/save-new-employee")]
-public class SaveNewEmployeeFromAuth0Controller : ControllerBase
+[Route("/auth0-maintenance")]
+public class ManageEmployeeFromAuth0Controller : ControllerBase
 {
-    private readonly ISaveNewEmployeeFromAuth0Service _saveNewEmployeeFromAuth0Service;
+    private readonly IManageEmployeeFromAuth0Service _manageEmployeeFromAuth0Service;
 
-    public SaveNewEmployeeFromAuth0Controller(ISaveNewEmployeeFromAuth0Service saveNewEmployeeFromAuth0Service)
+    public ManageEmployeeFromAuth0Controller(IManageEmployeeFromAuth0Service manageEmployeeFromAuth0Service)
     {
-        _saveNewEmployeeFromAuth0Service = saveNewEmployeeFromAuth0Service;
+        _manageEmployeeFromAuth0Service = manageEmployeeFromAuth0Service;
     }
     
 
@@ -26,7 +26,7 @@ public class SaveNewEmployeeFromAuth0Controller : ControllerBase
     [ServiceFilter<RequireHmacSignatureFilter>]
     public async Task<IActionResult> SaveNewEmployee(Auth0EmployeeModel auth0Employee)
     {
-        await _saveNewEmployeeFromAuth0Service.SaveNewEmployeeAsync(auth0Employee);
+        await _manageEmployeeFromAuth0Service.SaveNewEmployeeAsync(auth0Employee);
         
         return Ok("Employee Saved!");
     }

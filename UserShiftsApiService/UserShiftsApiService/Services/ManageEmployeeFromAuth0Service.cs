@@ -6,11 +6,11 @@ using UserShiftsApiService.Models;
 
 namespace UserShiftsApiService.Services;
 
-public class SaveNewEmployeeFromAuth0Service : ISaveNewEmployeeFromAuth0Service
+public class ManageEmployeeFromAuth0Service : IManageEmployeeFromAuth0Service
 {
     private readonly ShiftsSchedulingContext _dbContext;
     
-    public SaveNewEmployeeFromAuth0Service(ShiftsSchedulingContext dbContext)
+    public ManageEmployeeFromAuth0Service(ShiftsSchedulingContext dbContext)
     {
         _dbContext = dbContext;
     }
