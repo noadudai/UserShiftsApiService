@@ -17,7 +17,7 @@ builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
 });
 
 builder.Services.AddSingleton<IGreetingService, GreetingService>();
-builder.Services.AddScoped<IManageUserFromAuth0Service, ManageUserFromAuth0Service>();
+builder.Services.AddScoped<IAuth0UserManagementService, Auth0UserManagementService>();
 builder.Services.AddScoped<RequireHmacSignatureFilter>();
 builder.Services.AddControllers();
 

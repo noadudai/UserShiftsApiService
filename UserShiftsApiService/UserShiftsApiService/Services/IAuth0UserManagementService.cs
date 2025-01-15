@@ -3,7 +3,7 @@ using UserShiftsApiService.Models;
 
 namespace UserShiftsApiService.Services;
 
-public interface IManageUserFromAuth0Service
+public interface IAuth0UserManagementService
 { 
-    Task SaveNewEmployeeAsync(Auth0UserModel auth0UserModel);
+    Task SaveNewUserAsync(Auth0UserModel auth0UserModel);
 }

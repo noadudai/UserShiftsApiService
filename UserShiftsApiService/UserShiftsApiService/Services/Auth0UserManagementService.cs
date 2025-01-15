@@ -6,16 +6,16 @@ using UserShiftsApiService.Models;
 
 namespace UserShiftsApiService.Services;
 
-public class ManageUserFromAuth0Service : IManageUserFromAuth0Service
+public class Auth0UserManagementService : IAuth0UserManagementService
 {
     private readonly ShiftsSchedulingContext _dbContext;
     
-    public ManageUserFromAuth0Service(ShiftsSchedulingContext dbContext)
+    public Auth0UserManagementService(ShiftsSchedulingContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public async Task SaveNewEmployeeAsync(Auth0UserModel auth0UserModel)
+    public async Task SaveNewUserAsync(Auth0UserModel auth0UserModel)
     {
         var user = _dbContext.Users.Any(u => u.AuthSub == auth0UserModel.UserId);
         if (!user)
