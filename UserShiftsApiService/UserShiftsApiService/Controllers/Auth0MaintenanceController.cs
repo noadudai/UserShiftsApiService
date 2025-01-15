@@ -12,11 +12,11 @@ namespace UserShiftsApiService.Controllers;
 
 [ApiController]
 [Route("/auth0-maintenance/")]
-public class Auth0UserManagementController : ControllerBase
+public class Auth0MaintenanceController : ControllerBase
 {
     private readonly IAuth0UserManagementService _auth0UserManagementService;
 
-    public Auth0UserManagementController(IAuth0UserManagementService auth0UserManagementService)
+    public Auth0MaintenanceController(IAuth0UserManagementService auth0UserManagementService)
     {
         _auth0UserManagementService = auth0UserManagementService;
     }
