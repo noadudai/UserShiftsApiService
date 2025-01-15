@@ -6,24 +6,24 @@ using UserShiftsApiService.Models;
 
 namespace UserShiftsApiService.Services;
 
-public class ManageEmployeeFromAuth0Service : IManageEmployeeFromAuth0Service
+public class ManageUserFromAuth0Service : IManageUserFromAuth0Service
 {
     private readonly ShiftsSchedulingContext _dbContext;
     
-    public ManageEmployeeFromAuth0Service(ShiftsSchedulingContext dbContext)
+    public ManageUserFromAuth0Service(ShiftsSchedulingContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public async Task SaveNewEmployeeAsync(Auth0EmployeeModel auth0EmployeeModel)
+    public async Task SaveNewEmployeeAsync(Auth0UserModel auth0UserModel)
     {
-        var user = _dbContext.Users.Any(u => u.AuthSub == auth0EmployeeModel.UserId);
+        var user = _dbContext.Users.Any(u => u.AuthSub == auth0UserModel.UserId);
         if (!user)
         {
             _dbContext.Add(new UserEntity
             {
-                AuthSub = auth0EmployeeModel.UserId,
-                Email = auth0EmployeeModel.UserEmail,
+                AuthSub = auth0UserModel.UserId,
+                Email = auth0UserModel.UserEmail,
                 Id = Guid.NewGuid().ToString(),
             });
             

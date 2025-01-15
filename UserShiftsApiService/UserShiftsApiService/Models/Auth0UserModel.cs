@@ -2,14 +2,11 @@
 
 namespace UserShiftsApiService.Models;
 
-public class Auth0EmployeeModel
+public class Auth0UserModel
 {
     [JsonPropertyName("user_id")]
     public string UserId { get; set; }
     
     [JsonPropertyName("user_email")]
     public string UserEmail { get; set; }
-    
-    [JsonPropertyName("host_name")]
-    public string HostName { get; set; }
 }
