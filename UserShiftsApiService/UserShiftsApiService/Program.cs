@@ -1,10 +1,12 @@
 using System.Reflection;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using UserShiftsApiService.ActionFilters;
 using UserShiftsApiService.Models;
 using UserShiftsApiService.Services;
@@ -27,9 +29,13 @@ var configuration = builder.Configuration;
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
-    options.Authority = builder.Configuration["Auth0:Domain"];
-    options.Audience = builder.Configuration["Auth0:Audience"];
+    options.Authority = $"https://{configuration["Auth0:Domain"]}/";
+    options.Audience = configuration["Auth0:Audience"];
     options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = ClaimTypes.NameIdentifier
+    };
 });
 
 builder.Services.AddAuthorization();
@@ -41,10 +47,10 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
     {
         options.AddPolicy("AllowFront", policy =>
         {
-            policy.WithOrigins(configuration["FrontUrl"]).AllowAnyHeader()
+            policy.WithOrigins(configuration["FrontUrl"])
                 .AllowAnyMethod()
-                .AllowCredentials().
-                AllowCredentials();
+                .AllowCredentials()
+                .AllowAnyHeader();
         });
     });
 }
@@ -67,6 +73,7 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

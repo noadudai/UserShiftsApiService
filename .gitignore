@@ -6,3 +6,4 @@
 **/obj/
 
 UserShiftsApiService/UserShiftsApiService.sln.DotSettings.user
+/UserShiftsApiService/node_modules/
