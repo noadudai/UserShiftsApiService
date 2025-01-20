@@ -18,8 +18,8 @@ public class UserController : ControllerBase
         _dbContext = dbContext;
     }
     
-    [HttpGet]
     [Authorize]
+    [HttpGet]
     [Route("get-user")]
     public async Task<IActionResult> GetUser()
     {

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@noadudai/employeesscheduleclient": "^12339696494.65.1",
+    "@noadudai/employeesscheduleclienttest": "^12854260585.72.1"
+  }
+}
