@@ -18,6 +18,7 @@ builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
 
 builder.Services.AddSingleton<IGreetingService, GreetingService>();
 builder.Services.AddScoped<IAuth0UserManagementService, Auth0UserManagementService>();
+builder.Services.AddScoped<IAddNewUserScheduleRequestService, AddNewUserScheduleRequestService>();
 builder.Services.AddScoped<RequireHmacSignatureFilter>();
 builder.Services.AddControllers();
 
@@ -41,10 +42,10 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
     {
         options.AddPolicy("AllowFront", policy =>
         {
-            policy.WithOrigins(configuration["FrontUrl"]).AllowAnyHeader()
+            policy.WithOrigins(configuration["FrontUrl"])
+                .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials().
-                AllowCredentials();
+                .AllowCredentials();
         });
     });
 }
@@ -64,10 +65,11 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
     app.UseCors("AllowFront");
 }
 
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllers();
 app.MapOpenApi();
