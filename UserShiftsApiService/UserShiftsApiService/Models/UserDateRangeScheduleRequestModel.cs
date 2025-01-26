@@ -7,8 +7,8 @@ namespace UserShiftsApiService.Models;
 public class UserDateRangeScheduleRequestModel
 {
     [JsonPropertyName("vacation_start_date")]
-    public DateTime VacationStartDate { get; set; }
+    public string VacationStartDate { get; set; }
 
     [JsonPropertyName("vacation_end_date")]
-    public DateTime VacationEndDate { get; set; }
+    public string VacationEndDate { get; set; }
 }

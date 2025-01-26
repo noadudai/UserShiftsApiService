@@ -23,8 +23,8 @@ public class AddNewUserScheduleRequestService : IAddNewUserScheduleRequestServic
         {
             Id = Guid.NewGuid().ToString(),
             UserId = user.Id,
-            StartingDate = dateRangeScheduleRequest.VacationStartDate,
-            EndingDate = dateRangeScheduleRequest.VacationEndDate,
+            StartingDate = DateTime.Parse(dateRangeScheduleRequest.VacationStartDate),
+            EndingDate = DateTime.Parse(dateRangeScheduleRequest.VacationEndDate),
             User = user,
             RequestType = requestType,
         });
