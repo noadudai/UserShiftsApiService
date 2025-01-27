@@ -16,7 +16,6 @@ builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddSingleton<IGreetingService, GreetingService>();
 builder.Services.AddScoped<IAuth0UserManagementService, Auth0UserManagementService>();
 builder.Services.AddScoped<IAddNewUserScheduleRequestService, AddNewUserScheduleRequestService>();
 builder.Services.AddScoped<RequireHmacSignatureFilter>();
