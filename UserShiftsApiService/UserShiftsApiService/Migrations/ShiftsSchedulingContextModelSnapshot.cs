@@ -44,7 +44,7 @@ namespace UserShiftsApiService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDateRangeScheduleRequestEntity");
+                    b.ToTable("UserDateRangeScheduleRequests");
                 });
 
             modelBuilder.Entity("UserShiftsApiService.Entities.UserEntity", b =>

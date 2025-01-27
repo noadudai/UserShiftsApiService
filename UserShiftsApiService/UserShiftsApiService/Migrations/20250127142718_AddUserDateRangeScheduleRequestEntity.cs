@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UserShiftsApiService.Migrations
 {
     /// <inheritdoc />
-    public partial class AddVacationEntity : Migration
+    public partial class AddUserDateRangeScheduleRequestEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,7 @@ namespace UserShiftsApiService.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDateRangeScheduleRequestEntity",
+                name: "UserDateRangeScheduleRequests",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -36,9 +36,9 @@ namespace UserShiftsApiService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDateRangeScheduleRequestEntity", x => x.Id);
+                    table.PrimaryKey("PK_UserDateRangeScheduleRequests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserDateRangeScheduleRequestEntity_Users_UserId",
+                        name: "FK_UserDateRangeScheduleRequests_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -46,8 +46,8 @@ namespace UserShiftsApiService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDateRangeScheduleRequestEntity_UserId",
-                table: "UserDateRangeScheduleRequestEntity",
+                name: "IX_UserDateRangeScheduleRequests_UserId",
+                table: "UserDateRangeScheduleRequests",
                 column: "UserId");
         }
 
@@ -55,7 +55,7 @@ namespace UserShiftsApiService.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserDateRangeScheduleRequestEntity");
+                name: "UserDateRangeScheduleRequests");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -12,8 +12,8 @@ using UserShiftsApiService.Models;
 namespace UserShiftsApiService.Migrations
 {
     [DbContext(typeof(ShiftsSchedulingContext))]
-    [Migration("20250125143709_AddVacationEntity")]
-    partial class AddVacationEntity
+    [Migration("20250127142718_AddUserDateRangeScheduleRequestEntity")]
+    partial class AddUserDateRangeScheduleRequestEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,7 +47,7 @@ namespace UserShiftsApiService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDateRangeScheduleRequestEntity");
+                    b.ToTable("UserDateRangeScheduleRequests");
                 });
 
             modelBuilder.Entity("UserShiftsApiService.Entities.UserEntity", b =>
