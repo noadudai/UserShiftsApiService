@@ -22,10 +22,10 @@ public class AddNewUserScheduleRequestController : ControllerBase
     [HttpPost]
     [Route("date-range-preference-request")]
     [Authorize]
-    public async Task<IActionResult> AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest, DateRangeRequestType dateRangeRequestType)
+    public async Task<IActionResult> AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest)
     {
         var userSub = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        await _addNewUserScheduleRequestService.AddNewDateRangePreferenceRequestAsync(dateRangePreferenceRequest, userSub, dateRangeRequestType);
+        await _addNewUserScheduleRequestService.AddNewDateRangePreferenceRequestAsync(dateRangePreferenceRequest, userSub);
 
         return Ok("Date Range Request Added!");
     }

@@ -15,7 +15,7 @@ public class AddNewUserScheduleRequestService : IAddNewUserScheduleRequestServic
         _dbContext = dbContext;
     }
 
-    public async Task AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest, string userId, DateRangeRequestType requestType)
+    public async Task AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest, string userId)
     {
         var user = await _dbContext.Users.FirstAsync(u => u.AuthSub == userId);
         
@@ -25,7 +25,7 @@ public class AddNewUserScheduleRequestService : IAddNewUserScheduleRequestServic
             UserId = user.Id,
             StartingDate = DateTime.Parse(dateRangePreferenceRequest.StartDate).ToUniversalTime(),
             EndingDate = DateTime.Parse(dateRangePreferenceRequest.EndDate).ToUniversalTime(),
-            RequestType = requestType,
+            RequestType = dateRangePreferenceRequest.RequestType,
         });
         
         await _dbContext.SaveChangesAsync();
