@@ -2,7 +2,7 @@ using System;
 
 namespace UserShiftsApiService.Entities;
 
-public class UserDateRangeScheduleRequestEntity
+public class UserDateRangePreferenceRequestEntity
 {
     public string Id { get; set; } 
     public DateTime StartingDate { get; set; }
@@ -10,5 +10,4 @@ public class UserDateRangeScheduleRequestEntity
     public DateRangeRequestType RequestType { get; set; }
     
     public string UserId { get; set; }
-    public UserEntity User { get; set; }
 }

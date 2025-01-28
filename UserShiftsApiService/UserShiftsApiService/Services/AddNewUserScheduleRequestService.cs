@@ -15,16 +15,16 @@ public class AddNewUserScheduleRequestService : IAddNewUserScheduleRequestServic
         _dbContext = dbContext;
     }
 
-    public async Task AddNewVacationRequestAsync(UserDateRangeScheduleRequestModel dateRangeScheduleRequest, string userId, DateRangeRequestType requestType)
+    public async Task AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest, string userId, DateRangeRequestType requestType)
     {
         var user = await _dbContext.Users.FirstAsync(u => u.AuthSub == userId);
         
-        _dbContext.Add(new UserDateRangeScheduleRequestEntity
+        _dbContext.Add(new UserDateRangePreferenceRequestEntity
         {
             Id = Guid.NewGuid().ToString(),
             UserId = user.Id,
-            StartingDate = DateTime.Parse(dateRangeScheduleRequest.VacationStartDate).ToUniversalTime(),
-            EndingDate = DateTime.Parse(dateRangeScheduleRequest.VacationEndDate).ToUniversalTime(),
+            StartingDate = DateTime.Parse(dateRangePreferenceRequest.StartDate).ToUniversalTime(),
+            EndingDate = DateTime.Parse(dateRangePreferenceRequest.EndDate).ToUniversalTime(),
             User = user,
             RequestType = requestType,
         });

@@ -1,0 +1,12 @@
+using System.Text.Json.Serialization;
+
+namespace UserShiftsApiService.Models;
+
+public class UserDateRangePreferenceRequestModel
+{
+    [JsonPropertyName("start_date")]
+    public string StartDate { get; set; }
+
+    [JsonPropertyName("end_date")]
+    public string EndDate { get; set; }
+}

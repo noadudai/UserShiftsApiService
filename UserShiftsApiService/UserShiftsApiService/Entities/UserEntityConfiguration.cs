@@ -11,8 +11,6 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(p => p.AuthSub).IsRequired();
         builder.Property(p => p.Email).IsRequired();
         
-        builder.HasMany(u => u.vacations)
-            .WithOne(vac => vac.User)
-            .HasForeignKey(vac => vac.UserId);
+        builder.HasMany(u => u.vacations);
     }
 }

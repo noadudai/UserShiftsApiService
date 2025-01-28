@@ -9,7 +9,7 @@ using UserShiftsApiService.Services;
 namespace UserShiftsApiService.Controllers;
 
 [ApiController]
-[Route("/user-schedule-request/")]
+[Route("/user-schedule-preferences-request/")]
 public class AddNewUserScheduleRequestController : ControllerBase
 {
     private readonly IAddNewUserScheduleRequestService _addNewUserScheduleRequestService;
@@ -20,13 +20,13 @@ public class AddNewUserScheduleRequestController : ControllerBase
     }
 
     [HttpPost]
-    [Route("vacation-request")]
+    [Route("date-range-preference-request")]
     [Authorize]
-    public async Task<IActionResult> AddNewVacationRequestAsync(UserDateRangeScheduleRequestModel dateRangeScheduleRequest)
+    public async Task<IActionResult> AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest, DateRangeRequestType dateRangeRequestType)
     {
         var userSub = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        await _addNewUserScheduleRequestService.AddNewVacationRequestAsync(dateRangeScheduleRequest, userSub, DateRangeRequestType.Vacation);
+        await _addNewUserScheduleRequestService.AddNewDateRangePreferenceRequestAsync(dateRangePreferenceRequest, userSub, dateRangeRequestType);
 
-        return Ok("Vacation Added!");
+        return Ok("Date Range Request Added!");
     }
 }

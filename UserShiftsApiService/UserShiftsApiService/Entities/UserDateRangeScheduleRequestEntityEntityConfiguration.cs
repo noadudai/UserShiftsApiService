@@ -4,15 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace UserShiftsApiService.Entities;
 
 
-public class UserDateRangeScheduleRequestEntityTypeConfiguration : IEntityTypeConfiguration<UserDateRangeScheduleRequestEntity>
+public class UserDateRangeScheduleRequestEntityTypeConfiguration : IEntityTypeConfiguration<UserDateRangePreferenceRequestEntity>
 {
-    public void Configure(EntityTypeBuilder<UserDateRangeScheduleRequestEntity> builder)
+    public void Configure(EntityTypeBuilder<UserDateRangePreferenceRequestEntity> builder)
     {
         builder.Property(p => p.UserId).IsRequired();
         builder.Property(p => p.RequestType).IsRequired();
         
-        builder.HasOne(vac => vac.User)
-            .WithMany(u => u.vacations)
-            .HasForeignKey(vac => vac.UserId);
+        builder.HasOne(vac => vac.UserId);
     }
 }

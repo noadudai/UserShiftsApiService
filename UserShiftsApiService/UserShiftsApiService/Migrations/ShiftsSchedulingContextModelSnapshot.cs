@@ -22,7 +22,7 @@ namespace UserShiftsApiService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangeScheduleRequestEntity", b =>
+            modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangePreferenceRequestEntity", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -65,7 +65,7 @@ namespace UserShiftsApiService.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangeScheduleRequestEntity", b =>
+            modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangePreferenceRequestEntity", b =>
                 {
                     b.HasOne("UserShiftsApiService.Entities.UserEntity", "User")
                         .WithMany("vacations")
