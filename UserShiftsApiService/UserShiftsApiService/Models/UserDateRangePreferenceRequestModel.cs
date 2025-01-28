@@ -12,5 +12,6 @@ public class UserDateRangePreferenceRequestModel
     public string EndDate { get; set; }
     
     [JsonPropertyName("request_type")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public DateRangeRequestType RequestType { get; set; }
 }
