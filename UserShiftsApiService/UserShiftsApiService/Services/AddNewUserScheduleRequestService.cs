@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UserShiftsApiService.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ public class AddNewUserScheduleRequestService : IAddNewUserScheduleRequestServic
 
     public async Task AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest, string userId)
     {
-        var user = await _dbContext.Users.FirstAsync(u => u.AuthSub == userId);
+        var user = _dbContext.Users.First(u => u.AuthSub == userId);
         
         _dbContext.Add(new UserDateRangePreferenceRequestEntity
         {

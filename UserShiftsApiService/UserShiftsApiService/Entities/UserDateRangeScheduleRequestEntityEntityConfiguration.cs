@@ -11,6 +11,8 @@ public class UserDateRangeScheduleRequestEntityTypeConfiguration : IEntityTypeCo
         builder.Property(p => p.UserId).IsRequired();
         builder.Property(p => p.RequestType).IsRequired();
         
-        builder.HasOne(vac => vac.UserId);
+        builder.HasOne(vac => vac.User)
+            .WithMany(u => u.vacations)
+            .HasForeignKey(vac => vac.UserId);
     }
 }

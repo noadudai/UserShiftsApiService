@@ -12,7 +12,7 @@ using UserShiftsApiService.Models;
 namespace UserShiftsApiService.Migrations
 {
     [DbContext(typeof(ShiftsSchedulingContext))]
-    [Migration("20250127142718_AddUserDateRangeScheduleRequestEntity")]
+    [Migration("20250128131959_AddUserDateRangeScheduleRequestEntity")]
     partial class AddUserDateRangeScheduleRequestEntity
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace UserShiftsApiService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangeScheduleRequestEntity", b =>
+            modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangePreferenceRequestEntity", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -68,7 +68,7 @@ namespace UserShiftsApiService.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangeScheduleRequestEntity", b =>
+            modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangePreferenceRequestEntity", b =>
                 {
                     b.HasOne("UserShiftsApiService.Entities.UserEntity", "User")
                         .WithMany("vacations")
