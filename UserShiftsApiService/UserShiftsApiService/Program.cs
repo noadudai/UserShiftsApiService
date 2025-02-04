@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using UserShiftsApiService.ActionFilters;
+using UserShiftsApiService.Middlewares;
 using UserShiftsApiService.Models;
 using UserShiftsApiService.Services;
 
@@ -55,6 +56,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -69,6 +72,7 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
 
 
 app.UseAuthorization();
+app.UseMiddleware<UserIdMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();

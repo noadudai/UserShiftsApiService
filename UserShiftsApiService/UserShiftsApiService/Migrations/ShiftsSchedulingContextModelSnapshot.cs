@@ -68,7 +68,7 @@ namespace UserShiftsApiService.Migrations
             modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangePreferenceRequestEntity", b =>
                 {
                     b.HasOne("UserShiftsApiService.Entities.UserEntity", "User")
-                        .WithMany("vacations")
+                        .WithMany("DateRangePreferences")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -78,7 +78,7 @@ namespace UserShiftsApiService.Migrations
 
             modelBuilder.Entity("UserShiftsApiService.Entities.UserEntity", b =>
                 {
-                    b.Navigation("vacations");
+                    b.Navigation("DateRangePreferences");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,5 +9,5 @@ public class UserEntity
     public string AuthSub { get; set; }
     public string Email { get; set; }
     
-    public ICollection<UserDateRangePreferenceRequestEntity> vacations { get; set; }
+    public ICollection<UserDateRangePreferenceRequestEntity> DateRangePreferences { get; set; }
 }
