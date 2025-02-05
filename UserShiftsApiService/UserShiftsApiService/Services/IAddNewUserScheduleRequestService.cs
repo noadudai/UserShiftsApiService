@@ -6,5 +6,5 @@ namespace UserShiftsApiService.Services;
 
 public interface IAddNewUserScheduleRequestService
 {
-    Task AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest);
+    Task AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest, string userId);
 }

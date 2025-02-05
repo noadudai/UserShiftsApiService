@@ -19,14 +19,12 @@ public class AddNewUserScheduleRequestService : IAddNewUserScheduleRequestServic
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest)
+    public async Task AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest, string userId)
     {
-        var httpContext = _httpContextAccessor.HttpContext;
-        
         _dbContext.Add(new UserDateRangePreferenceRequestEntity
         {
             Id = Guid.NewGuid().ToString(),
-            UserId = httpContext.Items["UserId"].ToString(),
+            UserId = userId,
             StartingDate = DateTime.Parse(dateRangePreferenceRequest.StartDate).ToUniversalTime(),
             EndingDate = DateTime.Parse(dateRangePreferenceRequest.EndDate).ToUniversalTime(),
             RequestType = dateRangePreferenceRequest.RequestType,

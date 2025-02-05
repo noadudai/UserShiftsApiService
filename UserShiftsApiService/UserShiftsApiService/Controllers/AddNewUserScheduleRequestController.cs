@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserShiftsApiService.Entities;
 using UserShiftsApiService.Models;
@@ -13,10 +14,13 @@ namespace UserShiftsApiService.Controllers;
 public class AddNewUserScheduleRequestController : ControllerBase
 {
     private readonly IAddNewUserScheduleRequestService _addNewUserScheduleRequestService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly string _userId;
 
-    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService)
+    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService, IHttpContextAccessor httpContextAccessor)
     {
         _addNewUserScheduleRequestService = addNewUserScheduleRequestService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpPost]
@@ -24,7 +28,7 @@ public class AddNewUserScheduleRequestController : ControllerBase
     [Authorize]
     public async Task<IActionResult> AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest)
     {
-        await _addNewUserScheduleRequestService.AddNewDateRangePreferenceRequestAsync(dateRangePreferenceRequest);
+        await _addNewUserScheduleRequestService.AddNewDateRangePreferenceRequestAsync(dateRangePreferenceRequest, _userId);
 
         return Ok("Date Range Request Added!");
     }

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +30,14 @@ public class UserIdMiddleware
             {
                 httpContext.Items["UserId"] = user.Id;
             }
+            else
+            {
+                throw new KeyNotFoundException("User not found");
+            }
+        }
+        else
+        {
+            throw new AuthenticationException("Unauthenticated user");
         }
         await _next(httpContext);
     }
