@@ -11,5 +11,5 @@ public class UserDateRangePreferenceRequestEntity
     
     public virtual string UserId { get; set; }
     
-    public virtual UserEntity User { get; set; }
+    public UserEntity User { get; set; }
 }
