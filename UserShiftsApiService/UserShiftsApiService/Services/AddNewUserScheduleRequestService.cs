@@ -26,8 +26,8 @@ public class AddNewUserScheduleRequestService : IAddNewUserScheduleRequestServic
         {
             Id = Guid.NewGuid().ToString(),
             UserId = _userContextProvider.GetUserContext().UserId,
-            StartingDate = DateTime.Parse(dateRangePreferenceRequest.StartDate).ToUniversalTime(),
-            EndingDate = DateTime.Parse(dateRangePreferenceRequest.EndDate).ToUniversalTime(),
+            StartingDate = dateRangePreferenceRequest.StartDate,
+            EndingDate = dateRangePreferenceRequest.EndDate,
             RequestType = dateRangePreferenceRequest.RequestType,
         });
         
