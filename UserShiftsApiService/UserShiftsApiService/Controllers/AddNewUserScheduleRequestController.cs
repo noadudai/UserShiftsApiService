@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserShiftsApiService.Entities;
+using UserShiftsApiService.Middlewares;
 using UserShiftsApiService.Models;
 using UserShiftsApiService.Services;
+using UserShiftsApiService.UserContext;
 
 namespace UserShiftsApiService.Controllers;
 
@@ -14,21 +16,19 @@ namespace UserShiftsApiService.Controllers;
 public class AddNewUserScheduleRequestController : ControllerBase
 {
     private readonly IAddNewUserScheduleRequestService _addNewUserScheduleRequestService;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly string _userId;
-
-    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService, IHttpContextAccessor httpContextAccessor)
+    
+    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService)
     {
         _addNewUserScheduleRequestService = addNewUserScheduleRequestService;
-        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpPost]
     [Route("date-range-preference-request")]
     [Authorize]
+    [ServiceFilter<UserContextProviderMiddleware>]
     public async Task<IActionResult> AddNewDateRangePreferenceRequestAsync(UserDateRangePreferenceRequestModel dateRangePreferenceRequest)
     {
-        await _addNewUserScheduleRequestService.AddNewDateRangePreferenceRequestAsync(dateRangePreferenceRequest, _userId);
+        await _addNewUserScheduleRequestService.AddNewDateRangePreferenceRequestAsync(dateRangePreferenceRequest);
 
         return Ok("Date Range Request Added!");
     }

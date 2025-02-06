@@ -10,6 +10,7 @@ using UserShiftsApiService.ActionFilters;
 using UserShiftsApiService.Middlewares;
 using UserShiftsApiService.Models;
 using UserShiftsApiService.Services;
+using UserShiftsApiService.UserContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,10 @@ builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
 builder.Services.AddScoped<IAuth0UserManagementService, Auth0UserManagementService>();
 builder.Services.AddScoped<IAddNewUserScheduleRequestService, AddNewUserScheduleRequestService>();
 builder.Services.AddScoped<RequireHmacSignatureFilter>();
+builder.Services.AddScoped<IUserContextProvider, UserContextProvider>();
 builder.Services.AddControllers();
+
+builder.Services.AddTransient<UserContextProviderMiddleware>();
 
 builder.Services.AddOpenApi();
 
@@ -72,7 +76,6 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
 
 
 app.UseAuthorization();
-app.UseMiddleware<UserIdMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();
