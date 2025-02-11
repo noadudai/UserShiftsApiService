@@ -58,14 +58,14 @@ jobs:
         if: ${{ github.ref_name != 'master' }}
         run: |
           cd UserShiftsApiService/UserShiftsApiService/
-          NPM_PACKAGE_VER=${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}
+          NPM_PACKAGE_VER=test-${{ github.run_id }}.${{ github.run_number }}.${{ github.run_attempt }}
           
           sudo apt-get update
           sudo apt-get install jq -y
           
           npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
           -g typescript-axios \
-          --additional-properties=npmName=@noadudai/scheduler-backend-test \
+          --additional-properties=npmName=@noadudai/scheduler-backend-client \
           --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
           -o ./generated-client
           
