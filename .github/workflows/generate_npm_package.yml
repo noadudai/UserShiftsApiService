@@ -40,7 +40,7 @@ jobs:
          
           npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
           -g typescript-axios \
-          --additional-properties=npmName=@noadudai/microserviceserverclient \
+          --additional-properties=npmName=@noadudai/scheduler-backend-client \
           --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
           -o ./generated-client
           
@@ -65,7 +65,7 @@ jobs:
           
           npx @openapitools/openapi-generator-cli generate -i ./openapi.json \
           -g typescript-axios \
-          --additional-properties=npmName=@noadudai/microserviceservertest \
+          --additional-properties=npmName=@noadudai/scheduler-backend-test \
           --additional-properties=npmVersion=${NPM_PACKAGE_VER} \
           -o ./generated-client
           
