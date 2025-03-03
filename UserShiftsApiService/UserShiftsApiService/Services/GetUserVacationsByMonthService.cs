@@ -17,9 +17,9 @@ public class GetUserVacationsByMonthService : IGetUserVacationsByMonthService
         _dbContext = dbContext;
     }
 
-    public async Task<List<UserDateRangePreferenceRequestEntity>> GetAllUerVacationsByMonthAsync(DateTime month)
+    public async Task<List<UserDateRangePreferenceRequestEntity>> GetAllUerVacationsByMonthAsync(GetUserVacationMonthModel month)
     {
         return await _dbContext.UserDateRangeScheduleRequests.Where(prefRec =>
-            prefRec.StartingDate.Date.Month == month.Month && prefRec.RequestType == DateRangeRequestType.Vacation).ToListAsync();
+            prefRec.StartingDate.Date.Month == month.MonthNumber && prefRec.RequestType == DateRangeRequestType.Vacation).ToListAsync();
     }
 }
