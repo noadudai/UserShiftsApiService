@@ -17,12 +17,12 @@ namespace UserShiftsApiService.Controllers;
 public class AddNewUserScheduleRequestController : ControllerBase
 {
     private readonly IAddNewUserScheduleRequestService _addNewUserScheduleRequestService;
-    private readonly IGetUserVacationsByMonthService _getUserVacationsByMonthService;
+    private readonly IGetUserVacationsByDateRangeService _getUserVacationsByDateRangeService;
     
-    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService, IGetUserVacationsByMonthService getUserVacationsByMonthService)
+    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService, IGetUserVacationsByDateRangeService getUserVacationsByDateRangeService)
     {
         _addNewUserScheduleRequestService = addNewUserScheduleRequestService;
-        _getUserVacationsByMonthService = getUserVacationsByMonthService;
+        _getUserVacationsByDateRangeService = getUserVacationsByDateRangeService;
     }
 
     [HttpPost]
@@ -37,10 +37,10 @@ public class AddNewUserScheduleRequestController : ControllerBase
     }
 
     [HttpPost]
-    [Route("Vacations-this-month")]
-    public async Task<IActionResult> GetUserVacationsByMonthAsync(DateTime month)
+    [Route("Vacations-by-date-range")]
+    public async Task<IActionResult> GetUserVacationsInDateRangeAsync(GetVacationsByDateRangeModel vacationsDateRange)
     {
-        var vacations = await _getUserVacationsByMonthService.GetAllUerVacationsByMonthAsync(month);
+        var vacations = await _getUserVacationsByDateRangeService.GetAllUserVacationsByDateRangeAsync(vacationsDateRange);
         return Ok(vacations);
     }
 }
