@@ -42,5 +42,6 @@ public class AddNewUserScheduleRequestController : ControllerBase
     {
         var vacations = await _getUserVacationsByDateRangeService.GetAllUserVacationsByDateRangeAsync(vacationsDateRange);
         return Ok(vacations);
+        
     }
 }
