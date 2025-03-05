@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace UserShiftsApiService.Models;
 
-public class GetVacationsByDateRangeModel
+public class GetVacationsByDateRangeRequestModel
 {
     [JsonPropertyName("start_date")]
     public DateTime StartDateOfRange { get; set; }

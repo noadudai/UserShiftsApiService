@@ -8,5 +8,5 @@ namespace UserShiftsApiService.Services;
 
 public interface IGetUserVacationsByDateRangeService
 {
-    Task<List<UserVacationsByDateRangeModel>> GetAllUserVacationsByDateRangeAsync(GetVacationsByDateRangeModel vacationsDateRange);
+    Task<List<OneVacationDateRangeModel>> GetAllUserVacationsByDateRangeAsync(GetVacationsByDateRangeRequestModel vacationsDateRangeRequest);
 }
