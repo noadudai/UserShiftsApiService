@@ -17,10 +17,10 @@ public class GetUserVacationsByDateRangeService : IGetUserVacationsByDateRangeSe
         _dbContext = dbContext;
     }
 
-    public async Task<List<OneVacationDateRangeModel>> GetAllUserVacationsByDateRangeAsync(GetVacationsByDateRangeRequestModel vacationsDateRangeRequest)
+    public async Task<List<OneVacationDateRangeModel>> GetAllUserVacationsByDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
     {
         var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(prefRec =>
-            prefRec.StartingDate >= vacationsDateRangeRequest.StartDateOfRange && prefRec.StartingDate <= vacationsDateRangeRequest.EndDateOfRange && prefRec.RequestType == DateRangeRequestType.Vacation).ToListAsync();
+            prefRec.StartingDate >= vacationsDateRangeRequest.StartDate && prefRec.StartingDate <= vacationsDateRangeRequest.EndDate && prefRec.RequestType == DateRangeRequestType.Vacation).ToListAsync();
         
         var vacationsDates = vacations.Select(vacation => new OneVacationDateRangeModel{StartDate = vacation.StartingDate, EndDate = vacation.EndingDate}).ToList();
 
