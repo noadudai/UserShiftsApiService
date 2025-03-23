@@ -38,7 +38,7 @@ public class AddNewUserScheduleRequestController : ControllerBase
 
     [HttpPost]
     [Route("Vacations-by-date-range")]
-    public async Task<IActionResult> GetUserVacationsInDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
+    public async Task<ActionResult<UserVacationsResponse>> GetUserVacationsInDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
     {
         var vacations = await _getUserVacationsByDateRangeService.GetAllUserVacationsByDateRangeAsync(vacationsDateRangeRequest);
         var response = new UserVacationsResponse { Vacations = vacations };
