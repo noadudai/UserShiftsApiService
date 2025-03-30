@@ -38,6 +38,8 @@ public class AddNewUserScheduleRequestController : ControllerBase
 
     [HttpPost]
     [Route("Vacations-by-date-range")]
+    [Authorize]
+    [ServiceFilter<UserContextProviderMiddleware>]
     public async Task<ActionResult<UserVacationsResponse>> GetUserVacationsInDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
     {
         var vacations = await _getUserVacationsByDateRangeService.GetAllUserVacationsByDateRangeAsync(vacationsDateRangeRequest);
