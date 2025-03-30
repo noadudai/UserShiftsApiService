@@ -17,12 +17,12 @@ namespace UserShiftsApiService.Controllers;
 public class AddNewUserScheduleRequestController : ControllerBase
 {
     private readonly IAddNewUserScheduleRequestService _addNewUserScheduleRequestService;
-    private readonly IGetUserVacationsByDateRangeService _getUserVacationsByDateRangeService;
+    private readonly IUserVacationService _userVacationService;
     
-    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService, IGetUserVacationsByDateRangeService getUserVacationsByDateRangeService)
+    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService, IUserVacationService userVacationService)
     {
         _addNewUserScheduleRequestService = addNewUserScheduleRequestService;
-        _getUserVacationsByDateRangeService = getUserVacationsByDateRangeService;
+        _userVacationService = userVacationService;
     }
 
     [HttpPost]
@@ -42,7 +42,7 @@ public class AddNewUserScheduleRequestController : ControllerBase
     [ServiceFilter<UserContextProviderMiddleware>]
     public async Task<ActionResult<UserVacationsResponse>> GetUserVacationsInDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
     {
-        var vacations = await _getUserVacationsByDateRangeService.GetAllUserVacationsByDateRangeAsync(vacationsDateRangeRequest);
+        var vacations = await _userVacationService.GetAllUserVacationsByDateRangeAsync(vacationsDateRangeRequest);
         var response = new UserVacationsResponse { Vacations = vacations };
         return Ok(response);
     }
