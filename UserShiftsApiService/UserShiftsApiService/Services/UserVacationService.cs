@@ -24,12 +24,6 @@ public class UserVacationService : IUserVacationService
         UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
     {
         var userId = _userContextProvider.GetUserContext().UserId;
-        /*
-        var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(prefRec =>
-            prefRec.StartingDate >= vacationsDateRangeRequest.StartDate &&
-            prefRec.StartingDate <= vacationsDateRangeRequest.EndDate &&
-            prefRec.RequestType == DateRangeRequestType.Vacation && prefRec.UserId == userId).ToListAsync() ;
-            */
         
         var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(prefRec =>
                 (prefRec.StartingDate >= vacationsDateRangeRequest.StartDate &&
