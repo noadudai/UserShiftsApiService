@@ -1,6 +1,6 @@
 # User Shifts API Service
 
-This service is the **API Gateway** of the Keep On Time Shifts project.  
+This service is the **Backend mediator** of the Keep On Time Shifts project.  
 It serves as the bridge between the frontend and the scheduling engine, handling business logic and  
 coordinating shift data between services. This service interacts with the PostgreSQL database,  
 processes employee shift data, and communicates with the Python-based scheduling engine for optimized shift results.
@@ -18,7 +18,7 @@ processes employee shift data, and communicates with the Python-based scheduling
 
 ---
 
-## Role in the Architecture
+## 🧠 Role in the Architecture
 
 This service acts as the **bridge between the frontend and the scheduling engine**.  
 It receives employee data from the frontend, saves it to the DB.  
@@ -71,6 +71,16 @@ dotnet restore
 # Run the project
 dotnet run
 ```
+
+---
+
+## GitHub Actions
+This project uses GitHub Actions to automate the process of:
+- Generate the OpenAPI spec
+- Create the NPM client and publish the library.
+
+The CI workflow ensures the system is always up-to-date with the latest scheduling logic.  
+Check out the workflow configuration in the `.github/workflows` directory for more details.
 
 ---
 
