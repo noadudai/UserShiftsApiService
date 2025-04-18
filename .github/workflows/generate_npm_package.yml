@@ -24,7 +24,7 @@ jobs:
       - name: Build ASP.NET Core Project
         run: |
           cd UserShiftsApiService/UserShiftsApiService/
-          dotnet nuget add source "https://nuget.pkg.github.com/noadudai/index.json" --name github --username noadudai --password secrets.GITHUB_TOKEN
+          dotnet nuget add source --username noadudai --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/noadudai/index.json"
           dotnet build
 
       - name: Generate npm package to master
