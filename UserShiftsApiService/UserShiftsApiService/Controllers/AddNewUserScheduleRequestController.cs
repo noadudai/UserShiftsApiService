@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -16,10 +17,12 @@ namespace UserShiftsApiService.Controllers;
 public class AddNewUserScheduleRequestController : ControllerBase
 {
     private readonly IAddNewUserScheduleRequestService _addNewUserScheduleRequestService;
+    private readonly IManageUserScheduleService _manageUserScheduleService;
     
-    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService)
+    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService, IManageUserScheduleService manageUserScheduleService)
     {
         _addNewUserScheduleRequestService = addNewUserScheduleRequestService;
+        _manageUserScheduleService = manageUserScheduleService;
     }
 
     [HttpPost]
@@ -31,5 +34,16 @@ public class AddNewUserScheduleRequestController : ControllerBase
         await _addNewUserScheduleRequestService.AddNewDateRangePreferenceRequestAsync(dateRangePreferenceRequest);
 
         return Ok("Date Range Request Added!");
+    }
+
+    [HttpPost]
+    [Route("Vacations-by-date-range")]
+    [Authorize]
+    [ServiceFilter<UserContextProviderMiddleware>]
+    public async Task<ActionResult<UserVacationsResponse>> GetUserVacationsInDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
+    {
+        var vacations = await _manageUserScheduleService.GetAllUserVacationsByDateRangeAsync(vacationsDateRangeRequest);
+        var response = new UserVacationsResponse { Vacations = vacations };
+        return Ok(response);
     }
 }
