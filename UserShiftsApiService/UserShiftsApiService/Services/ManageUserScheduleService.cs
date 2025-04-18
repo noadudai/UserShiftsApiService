@@ -9,12 +9,12 @@ using UserShiftsApiService.UserContext;
 
 namespace UserShiftsApiService.Services;
 
-public class UserVacationService : IUserVacationService
+public class ManageUserScheduleService : IManageUserScheduleService
 {
     private readonly ShiftsSchedulingContext _dbContext;
     private readonly IUserContextProvider _userContextProvider;
     
-    public UserVacationService(ShiftsSchedulingContext dbContext, IUserContextProvider userContextProvider)
+    public ManageUserScheduleService(ShiftsSchedulingContext dbContext, IUserContextProvider userContextProvider)
     {
         _dbContext = dbContext;
         _userContextProvider = userContextProvider;

@@ -23,7 +23,7 @@ builder.Services.AddScoped<IAuth0UserManagementService, Auth0UserManagementServi
 builder.Services.AddScoped<IAddNewUserScheduleRequestService, AddNewUserScheduleRequestService>();
 builder.Services.AddScoped<RequireHmacSignatureFilter>();
 builder.Services.AddScoped<IUserContextProvider, UserContextProvider>();
-builder.Services.AddScoped<IUserVacationService, UserVacationService>();
+builder.Services.AddScoped<IManageUserScheduleService, ManageUserScheduleService>();
 
 builder.Services.AddControllers();
 
