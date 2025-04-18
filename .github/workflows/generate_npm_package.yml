@@ -24,10 +24,10 @@ jobs:
       - name: Build ASP.NET Core Project
         run: |
           cd UserShiftsApiService/UserShiftsApiService/
-          
+          dotnet nuget add source "https://nuget.pkg.github.com/noadudai/index.json" --name github --username noadudai --password secrets.GITHUB_TOKEN
           dotnet build
 
-      - name: Generate nmp package to master
+      - name: Generate npm package to master
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ github.ref_name == 'master' }}
@@ -52,7 +52,7 @@ jobs:
           npm run build
           npm publish
      
-      - name: Generate nmp package to any branch
+      - name: Generate npm package to any branch
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ github.ref_name != 'master' }}
