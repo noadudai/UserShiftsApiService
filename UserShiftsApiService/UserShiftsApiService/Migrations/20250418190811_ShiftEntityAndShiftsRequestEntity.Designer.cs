@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UserShiftsApiService.Models;
@@ -12,9 +13,11 @@ using UserShiftsApiService.Models;
 namespace UserShiftsApiService.Migrations
 {
     [DbContext(typeof(ShiftsSchedulingContext))]
-    partial class ShiftsSchedulingContextModelSnapshot : ModelSnapshot
+    [Migration("20250418190811_ShiftEntityAndShiftsRequestEntity")]
+    partial class ShiftEntityAndShiftsRequestEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,9 +99,8 @@ namespace UserShiftsApiService.Migrations
                         .IsRequired()
                         .HasColumnType("uuid[]");
 
-                    b.Property<string>("ShiftRequestType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("ShiftRequestType")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserId")
                         .IsRequired()
