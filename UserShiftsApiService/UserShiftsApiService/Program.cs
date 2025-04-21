@@ -21,6 +21,7 @@ builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
 
 builder.Services.AddScoped<IAuth0UserManagementService, Auth0UserManagementService>();
 builder.Services.AddScoped<IAddNewUserScheduleRequestService, AddNewUserScheduleRequestService>();
+builder.Services.AddScoped<IShiftService, ShiftService>();
 builder.Services.AddScoped<RequireHmacSignatureFilter>();
 builder.Services.AddScoped<IUserContextProvider, UserContextProvider>();
 builder.Services.AddControllers();

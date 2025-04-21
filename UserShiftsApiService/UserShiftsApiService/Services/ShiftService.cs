@@ -18,10 +18,10 @@ public class ShiftService : IShiftService
     {
         _dbContext.Add(new ShiftEntity
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid(),
             ShiftType = shiftModel.ShiftType,
-            EndDate = shiftModel.EndDate,
-            StartDate = shiftModel.StartDate,
+            EndDate = shiftModel.EndDate.ToUniversalTime(),
+            StartDate = shiftModel.StartDate.ToUniversalTime(),
         });
         
         await _dbContext.SaveChangesAsync();
