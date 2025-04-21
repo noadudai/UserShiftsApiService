@@ -1,11 +1,10 @@
 using System;
-using noadudai.schedule_generator_client.Model;
 
 namespace UserShiftsApiService.Entities;
 
 public class ShiftEntity
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
     
     public ShiftType ShiftType { get; set; }
     
