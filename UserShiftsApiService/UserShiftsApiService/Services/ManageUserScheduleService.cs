@@ -25,11 +25,11 @@ public class ManageUserScheduleService : IManageUserScheduleService
     {
         var userId = _userContextProvider.GetUserContext().UserId;
         
-        var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(prefRec =>
-                (prefRec.StartingDate >= vacationsDateRangeRequest.StartDate &&
-                 prefRec.StartingDate <= vacationsDateRangeRequest.EndDate) ||
-                (prefRec.StartingDate < vacationsDateRangeRequest.StartDate &&
-                 prefRec.EndingDate >= vacationsDateRangeRequest.StartDate))
+        var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(prefReq =>
+                (prefReq.StartingDate >= vacationsDateRangeRequest.StartDate &&
+                 prefReq.StartingDate <= vacationsDateRangeRequest.EndDate) ||
+                (prefReq.StartingDate < vacationsDateRangeRequest.StartDate &&
+                 prefReq.EndingDate >= vacationsDateRangeRequest.StartDate))
             .Where(prefRec => prefRec.RequestType == DateRangeRequestType.Vacation && prefRec.UserId == userId)
             .ToListAsync();
 
