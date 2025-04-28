@@ -9,18 +9,18 @@ using UserShiftsApiService.UserContext;
 
 namespace UserShiftsApiService.Services;
 
-public class ManageUserScheduleService : IManageUserScheduleService
+public class UserScheduleRequestService : IUserScheduleRequestService
 {
     private readonly ShiftsSchedulingContext _dbContext;
     private readonly IUserContextProvider _userContextProvider;
     
-    public ManageUserScheduleService(ShiftsSchedulingContext dbContext, IUserContextProvider userContextProvider)
+    public UserScheduleRequestService(ShiftsSchedulingContext dbContext, IUserContextProvider userContextProvider)
     {
         _dbContext = dbContext;
         _userContextProvider = userContextProvider;
     }
 
-    public async Task<List<OneVacationDateRangeModel>> GetAllUserVacationsByDateRangeAsync(
+    public async Task<List<UserVacationModel>> GetAllUserVacationsByDateRangeAsync(
         UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
     {
         var userId = _userContextProvider.GetUserContext().UserId;
@@ -33,7 +33,7 @@ public class ManageUserScheduleService : IManageUserScheduleService
             .Where(prefRec => prefRec.RequestType == DateRangeRequestType.Vacation && prefRec.UserId == userId)
             .ToListAsync();
 
-        var vacationsDates = vacations.Select(vacation => new OneVacationDateRangeModel
+        var vacationsDates = vacations.Select(vacation => new UserVacationModel
             { StartDate = vacation.StartingDate, EndDate = vacation.EndingDate }).ToList();
 
         return vacationsDates;

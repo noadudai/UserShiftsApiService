@@ -4,5 +4,5 @@ namespace UserShiftsApiService.Models;
 
 public class UserVacationsResponse
 {
-    public List<OneVacationDateRangeModel> Vacations { get; set; }
+    public List<UserVacationModel> Vacations { get; set; }
 }

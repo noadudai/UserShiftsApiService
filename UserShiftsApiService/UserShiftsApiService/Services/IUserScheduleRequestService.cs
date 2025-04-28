@@ -6,7 +6,7 @@ using UserShiftsApiService.Models;
 
 namespace UserShiftsApiService.Services;
 
-public interface IManageUserScheduleService
+public interface IUserScheduleRequestService
 {
-    Task<List<OneVacationDateRangeModel>> GetAllUserVacationsByDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest);
+    Task<List<UserVacationModel>> GetAllUserVacationsByDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest);
 }
