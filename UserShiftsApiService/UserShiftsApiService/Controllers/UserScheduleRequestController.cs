@@ -14,12 +14,12 @@ namespace UserShiftsApiService.Controllers;
 
 [ApiController]
 [Route("/user-schedule-preferences-request/")]
-public class AddNewUserScheduleRequestController : ControllerBase
+public class UserScheduleRequestController : ControllerBase
 {
     private readonly IAddNewUserScheduleRequestService _addNewUserScheduleRequestService;
     private readonly IUserScheduleRequestService _userScheduleRequestService;
     
-    public AddNewUserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService, IUserScheduleRequestService userScheduleRequestService)
+    public UserScheduleRequestController(IAddNewUserScheduleRequestService addNewUserScheduleRequestService, IUserScheduleRequestService userScheduleRequestService)
     {
         _addNewUserScheduleRequestService = addNewUserScheduleRequestService;
         _userScheduleRequestService = userScheduleRequestService;
