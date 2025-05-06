@@ -4,12 +4,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace UserShiftsApiService.Entities;
 
-public class UserShiftPreferenceRequestEntityConfiguration : IEntityTypeConfiguration<UserShiftPreferenceRequestEntity>
+public class UserShiftsPreferenceRequestEntityConfiguration : IEntityTypeConfiguration<UserShiftsPreferenceRequestEntity>
 {
-    public void Configure(EntityTypeBuilder<UserShiftPreferenceRequestEntity> builder)
+    public void Configure(EntityTypeBuilder<UserShiftsPreferenceRequestEntity> builder)
     {
         builder.HasKey(p => p.Id);
-        builder.Property(p => p.ShiftIds).IsRequired();
         builder.Property(p => p.UserId).IsRequired();
         
         builder.HasOne(shiftPref => shiftPref.User)
