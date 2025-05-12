@@ -18,7 +18,7 @@ public class ShiftService : IShiftService
     {
         _dbContext.Add(new ShiftEntity
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.NewGuid().ToString(),
             ShiftType = shiftModel.ShiftType,
             EndDate = shiftModel.EndDate.ToUniversalTime(),
             StartDate = shiftModel.StartDate.ToUniversalTime(),
