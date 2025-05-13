@@ -10,4 +10,5 @@ public class UserEntity
     public string Email { get; set; }
     
     public ICollection<UserDateRangePreferenceRequestEntity> DateRangePreferences { get; set; }
+    public ICollection<UserShiftPreferenceRequestEntity> ShiftPreferences { get; set; }
 }

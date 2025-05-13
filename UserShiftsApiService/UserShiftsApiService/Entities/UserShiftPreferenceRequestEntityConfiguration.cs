@@ -1,0 +1,23 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
+namespace UserShiftsApiService.Entities;
+
+public class UserShiftPreferenceRequestEntityConfiguration : IEntityTypeConfiguration<UserShiftPreferenceRequestEntity>
+{
+    public void Configure(EntityTypeBuilder<UserShiftPreferenceRequestEntity> builder)
+    {
+        builder.HasKey(p => p.Id);
+        builder.Property(p => p.ShiftIds).IsRequired();
+        builder.Property(p => p.UserId).IsRequired();
+        
+        builder.HasOne(shiftPref => shiftPref.User)
+            .WithMany(u => u.ShiftPreferences)
+            .HasForeignKey(shiftPref => shiftPref.UserId);
+
+        builder.Property(p => p.ShiftRequestType)
+            .HasConversion(new EnumToStringConverter<ShiftRequestType>())
+            .IsRequired();
+    }
+}
