@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace UserShiftsApiService.Entities;
 
-using noadudai.schedule_generator_client.Model;
-
 public class UserShiftsPreferenceRequestEntity
 {
     public string Id { get; set; } 

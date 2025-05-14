@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using noadudai.schedule_generator_client.Model;
 
 namespace UserShiftsApiService.Entities;
 
