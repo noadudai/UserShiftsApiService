@@ -130,7 +130,7 @@ namespace UserShiftsApiService.Migrations
             modelBuilder.Entity("UserShiftsApiService.Entities.RequestedShiftEntity", b =>
                 {
                     b.HasOne("UserShiftsApiService.Entities.ShiftEntity", "Shift")
-                        .WithMany("UserRequestedShifts")
+                        .WithMany("ShiftRequests")
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -170,7 +170,7 @@ namespace UserShiftsApiService.Migrations
 
             modelBuilder.Entity("UserShiftsApiService.Entities.ShiftEntity", b =>
                 {
-                    b.Navigation("UserRequestedShifts");
+                    b.Navigation("ShiftRequests");
                 });
 
             modelBuilder.Entity("UserShiftsApiService.Entities.UserEntity", b =>

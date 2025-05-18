@@ -17,7 +17,7 @@ public class RequestedShiftEntityConfiguration : IEntityTypeConfiguration<Reques
             .HasForeignKey(RequestedShift => RequestedShift.UserShiftsRequestId);
         
         builder.HasOne(RequestedShift => RequestedShift.Shift)
-            .WithMany(s =>  s.UserRequestedShifts)
+            .WithMany(s =>  s.ShiftRequests)
             .HasForeignKey(RequestedShift => RequestedShift.ShiftId);
     }
 }
