@@ -10,14 +10,8 @@ public class RequestedShiftEntityConfiguration : IEntityTypeConfiguration<Reques
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.ShiftId).IsRequired();
-        builder.Property(p => p.UserShiftsRequestId).IsRequired();
+        builder.Property(p => p.UserShiftsPreferenceRequestId).IsRequired();
         
-        builder.HasOne(RequestedShift => RequestedShift.UserShiftsRequest)
-            .WithMany(req => req.RequestedShifts)
-            .HasForeignKey(RequestedShift => RequestedShift.UserShiftsRequestId);
-        
-        builder.HasOne(RequestedShift => RequestedShift.Shift)
-            .WithMany(s =>  s.ShiftRequests)
-            .HasForeignKey(RequestedShift => RequestedShift.ShiftId);
+        builder.HasOne(p => p.Shift).WithMany().HasForeignKey(p => p.ShiftId);
     }
 }

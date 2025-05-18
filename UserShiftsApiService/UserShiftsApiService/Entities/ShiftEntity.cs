@@ -9,5 +9,4 @@ public class ShiftEntity
     public ShiftType ShiftType { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public ICollection<RequestedShiftEntity> ShiftRequests { get; set; }
 }

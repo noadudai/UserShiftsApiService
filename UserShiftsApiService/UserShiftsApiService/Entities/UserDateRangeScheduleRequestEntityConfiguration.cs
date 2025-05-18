@@ -15,7 +15,7 @@ public class UserDateRangeScheduleRequestEntityTypeConfiguration : IEntityTypeCo
         builder.Property(p => p.UserId).IsRequired();
         
         builder.HasOne(dateRangePrefs => dateRangePrefs.User)
-            .WithMany(u => u.DateRangePreferences)
+            .WithMany(u => u.ShiftsByDateRangePreferences)
             .HasForeignKey(dateRangePrefs => dateRangePrefs.UserId);
     }
 }

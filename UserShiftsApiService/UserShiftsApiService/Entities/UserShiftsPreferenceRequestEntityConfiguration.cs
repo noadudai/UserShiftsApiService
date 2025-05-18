@@ -11,12 +11,17 @@ public class UserShiftsPreferenceRequestEntityConfiguration : IEntityTypeConfigu
         builder.HasKey(p => p.Id);
         builder.Property(p => p.UserId).IsRequired();
         
-        builder.HasOne(shiftPref => shiftPref.User)
-            .WithMany(u => u.ShiftPreferences)
+        builder.HasOne(p => p.User)
+            .WithMany(u => u.ShiftsByIdPreferences)
             .HasForeignKey(shiftPref => shiftPref.UserId);
 
         builder.Property(p => p.ShiftRequestType)
             .HasConversion(new EnumToStringConverter<ShiftRequestType>())
             .IsRequired();
+
+        builder.HasMany(p => p.RequestedShifts)
+            .WithOne()
+            .HasForeignKey(p => p.UserShiftsPreferenceRequestId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
