@@ -20,16 +20,14 @@ public class UserScheduleRequestService : IUserScheduleRequestService
         _userContextProvider = userContextProvider;
     }
 
-    public async Task<List<UserVacationModel>> GetAllUserVacationsByDateRangeAsync(
-        UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
+    public async Task<List<UserVacationModel>> GetAllUserFutureVacationsAsync()
     {
         var userId = _userContextProvider.GetUserContext().UserId;
         
         var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(prefReq =>
-                (prefReq.StartingDate >= vacationsDateRangeRequest.StartDate &&
-                 prefReq.StartingDate <= vacationsDateRangeRequest.EndDate) ||
-                (prefReq.StartingDate < vacationsDateRangeRequest.StartDate &&
-                 prefReq.EndingDate >= vacationsDateRangeRequest.StartDate))
+                (prefReq.StartingDate >= DateTime.Now) ||
+                (prefReq.StartingDate < DateTime.Now &&
+                 prefReq.EndingDate >= DateTime.Now))
             .Where(prefRec => prefRec.RequestType == DateRangeRequestType.Vacation && prefRec.UserId == userId)
             .ToListAsync();
 
