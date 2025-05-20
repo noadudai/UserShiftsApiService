@@ -9,7 +9,7 @@ public class UserDateRangePreferenceRequestEntity
     public DateTime EndingDate { get; set; }
     public DateRangeRequestType RequestType { get; set; }
     
-    public virtual string UserId { get; set; }
+    public string UserId { get; set; }
     
     public virtual UserEntity User { get; set; }
 }
