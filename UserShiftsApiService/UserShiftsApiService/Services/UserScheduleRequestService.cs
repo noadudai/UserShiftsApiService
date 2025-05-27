@@ -25,9 +25,9 @@ public class UserScheduleRequestService : IUserScheduleRequestService
         var userId = _userContextProvider.GetUserContext().UserId;
         
         var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(prefReq =>
-                (prefReq.StartingDate >= DateTime.Now) ||
-                (prefReq.StartingDate < DateTime.Now &&
-                 prefReq.EndingDate >= DateTime.Now))
+                (prefReq.StartingDate >= DateTime.UtcNow) ||
+                (prefReq.StartingDate < DateTime.UtcNow &&
+                 prefReq.EndingDate >= DateTime.UtcNow))
             .Where(prefRec => prefRec.RequestType == DateRangeRequestType.Vacation && prefRec.UserId == userId)
             .ToListAsync();
 
