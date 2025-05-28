@@ -36,4 +36,13 @@ public class UserScheduleRequestService : IUserScheduleRequestService
 
         return vacationsDates;
     }
+
+    public async Task<int> GetNumberOfFutureVacationsAsync()
+    {
+        var userId = _userContextProvider.GetUserContext().UserId;
+
+        var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(p => p.RequestType == DateRangeRequestType.Vacation && p.UserId == userId).ToListAsync();
+        
+        return vacations.Count;
+    }
 }

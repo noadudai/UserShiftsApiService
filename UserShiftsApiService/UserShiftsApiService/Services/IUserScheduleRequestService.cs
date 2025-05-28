@@ -9,4 +9,5 @@ namespace UserShiftsApiService.Services;
 public interface IUserScheduleRequestService
 {
     Task<List<UserVacationModel>> GetAllUserFutureVacationsAsync();
+    Task<int> GetNumberOfFutureVacationsAsync();
 }
