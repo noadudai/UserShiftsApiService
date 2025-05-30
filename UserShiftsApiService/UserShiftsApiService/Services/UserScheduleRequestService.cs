@@ -41,7 +41,11 @@ public class UserScheduleRequestService : IUserScheduleRequestService
     {
         var userId = _userContextProvider.GetUserContext().UserId;
 
-        var numberOfVacations = _dbContext.UserDateRangeScheduleRequests.Count(p => p.RequestType == DateRangeRequestType.Vacation && p.UserId == userId);
+        var numberOfVacations = _dbContext.UserDateRangeScheduleRequests.Where(p =>
+            (p.StartingDate >= DateTime.UtcNow) ||
+            (p.StartingDate < DateTime.UtcNow &&
+             p.EndingDate >= DateTime.UtcNow)).Count(p =>
+            p.RequestType == DateRangeRequestType.Vacation && p.UserId == userId);
         
         return numberOfVacations;
     }
