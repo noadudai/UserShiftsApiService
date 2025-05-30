@@ -41,8 +41,8 @@ public class UserScheduleRequestService : IUserScheduleRequestService
     {
         var userId = _userContextProvider.GetUserContext().UserId;
 
-        var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(p => p.RequestType == DateRangeRequestType.Vacation && p.UserId == userId).ToListAsync();
+        var numberOfVacations = _dbContext.UserDateRangeScheduleRequests.Count(p => p.RequestType == DateRangeRequestType.Vacation && p.UserId == userId);
         
-        return vacations.Count;
+        return numberOfVacations;
     }
 }
