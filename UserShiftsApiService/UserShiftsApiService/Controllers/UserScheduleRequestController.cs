@@ -46,14 +46,4 @@ public class UserScheduleRequestController : ControllerBase
         var response = new UserVacationsResponse { Vacations = vacations };
         return Ok(response);
     }
-    
-    [HttpPost]
-    [Route("get-number-of-future-vacations")]
-    [Authorize]
-    [ServiceFilter<UserContextProviderMiddleware>]
-    public async Task<ActionResult<int>> GetNumberOfUserFutureVacationsAsync()
-    {
-        var numberOfFutureVacations = await _userScheduleRequestService.GetNumberOfFutureVacationsAsync();
-        return Ok(numberOfFutureVacations);
-    }
 }
