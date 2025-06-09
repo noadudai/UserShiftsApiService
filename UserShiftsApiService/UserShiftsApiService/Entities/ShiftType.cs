@@ -3,6 +3,13 @@ namespace UserShiftsApiService.Entities;
 public enum ShiftType
 {
     Morning,
+    MorningBackup,
     Evening,
-    Closing
+    Closing,
+    ThursdayBackup,
+    WeekendMorning,
+    WeekendMorningBackup,
+    WeekendEveningBackup,
+    StandBy
 }
+
