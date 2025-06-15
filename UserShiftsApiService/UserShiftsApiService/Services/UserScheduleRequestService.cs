@@ -21,7 +21,7 @@ public class UserScheduleRequestService : IUserScheduleRequestService
     }
 
     public async Task<List<UserVacationModel>> GetAllUserVacationsByDateRangeAsync(
-        UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
+        UserVacationsByDateRangeModel vacationsDateRangeRequest)
     {
         var userId = _userContextProvider.GetUserContext().UserId;
         
