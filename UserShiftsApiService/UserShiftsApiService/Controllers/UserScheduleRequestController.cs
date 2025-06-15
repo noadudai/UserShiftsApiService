@@ -40,7 +40,7 @@ public class UserScheduleRequestController : ControllerBase
     [Route("vacations-by-date-range")]
     [Authorize]
     [ServiceFilter<UserContextProviderMiddleware>]
-    public async Task<ActionResult<UserVacationsResponse>> GetUserVacationsInDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
+    public async Task<ActionResult<UserVacationsResponse>> GetUserVacationsInDateRangeAsync(UserVacationsByDateRangeModel vacationsDateRangeRequest)
     {
         var vacations = await _userScheduleRequestService.GetAllUserVacationsByDateRangeAsync(vacationsDateRangeRequest);
         var response = new UserVacationsResponse { Vacations = vacations };
