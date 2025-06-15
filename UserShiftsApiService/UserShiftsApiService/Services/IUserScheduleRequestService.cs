@@ -8,5 +8,5 @@ namespace UserShiftsApiService.Services;
 
 public interface IUserScheduleRequestService
 {
-    Task<List<UserVacationModel>> GetAllUserFutureVacationsAsync();
+    Task<List<UserVacationModel>> GetAllUserVacationsByDateRangeAsync(UserDateRangePreferenceRequestModel vacationsDateRangeRequest);
 }

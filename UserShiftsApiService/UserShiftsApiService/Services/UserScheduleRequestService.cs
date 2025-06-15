@@ -19,19 +19,22 @@ public class UserScheduleRequestService : IUserScheduleRequestService
         _dbContext = dbContext;
         _userContextProvider = userContextProvider;
     }
-
-    public async Task<List<UserVacationModel>> GetAllUserFutureVacationsAsync()
+    
+    public async Task<List<UserVacationModel>> GetAllUserVacationsByDateRangeAsync(
+        UserDateRangePreferenceRequestModel vacationsDateRangeRequest)
     {
         var userId = _userContextProvider.GetUserContext().UserId;
-        
-        var vacations = await _dbContext.UserDateRangeScheduleRequests
-            .Where(prefReq => (prefReq.EndingDate >= DateTime.UtcNow))
+
+        var vacations = await _dbContext.UserDateRangeScheduleRequests.Where(prefReq =>
+                (prefReq.StartingDate >= vacationsDateRangeRequest.StartDate &&
+                 prefReq.StartingDate <= vacationsDateRangeRequest.EndDate) ||
+                (prefReq.StartingDate < vacationsDateRangeRequest.StartDate &&
+                 prefReq.EndingDate >= vacationsDateRangeRequest.StartDate))
             .Where(prefRec => prefRec.RequestType == DateRangeRequestType.Vacation && prefRec.UserId == userId)
             .ToListAsync();
 
         var vacationsDates = vacations.Select(vacation => new UserVacationModel
             { StartDate = vacation.StartingDate, EndDate = vacation.EndingDate }).ToList();
-
         return vacationsDates;
     }
 }
