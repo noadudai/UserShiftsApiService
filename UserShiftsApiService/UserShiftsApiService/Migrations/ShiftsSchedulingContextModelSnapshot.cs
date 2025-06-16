@@ -22,48 +22,6 @@ namespace UserShiftsApiService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("UserShiftsApiService.Entities.RequestedShiftEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ShiftId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserShiftsPreferenceRequestId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShiftId");
-
-                    b.HasIndex("UserShiftsPreferenceRequestId");
-
-                    b.ToTable("RequestedShift");
-                });
-
-            modelBuilder.Entity("UserShiftsApiService.Entities.ShiftEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ShiftType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Shifts");
-                });
-
             modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangePreferenceRequestEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -107,58 +65,10 @@ namespace UserShiftsApiService.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("UserShiftsApiService.Entities.UserShiftsPreferenceRequestEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ShiftRequestType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserShiftPreferenceRequests");
-                });
-
-            modelBuilder.Entity("UserShiftsApiService.Entities.RequestedShiftEntity", b =>
-                {
-                    b.HasOne("UserShiftsApiService.Entities.ShiftEntity", "Shift")
-                        .WithMany()
-                        .HasForeignKey("ShiftId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UserShiftsApiService.Entities.UserShiftsPreferenceRequestEntity", null)
-                        .WithMany("RequestedShifts")
-                        .HasForeignKey("UserShiftsPreferenceRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Shift");
-                });
-
             modelBuilder.Entity("UserShiftsApiService.Entities.UserDateRangePreferenceRequestEntity", b =>
                 {
                     b.HasOne("UserShiftsApiService.Entities.UserEntity", "User")
-                        .WithMany("ShiftsByDateRangePreferences")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UserShiftsApiService.Entities.UserShiftsPreferenceRequestEntity", b =>
-                {
-                    b.HasOne("UserShiftsApiService.Entities.UserEntity", "User")
-                        .WithMany("ShiftsByIdPreferences")
+                        .WithMany("DateRangePreferences")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -168,14 +78,7 @@ namespace UserShiftsApiService.Migrations
 
             modelBuilder.Entity("UserShiftsApiService.Entities.UserEntity", b =>
                 {
-                    b.Navigation("ShiftsByDateRangePreferences");
-
-                    b.Navigation("ShiftsByIdPreferences");
-                });
-
-            modelBuilder.Entity("UserShiftsApiService.Entities.UserShiftsPreferenceRequestEntity", b =>
-                {
-                    b.Navigation("RequestedShifts");
+                    b.Navigation("DateRangePreferences");
                 });
 #pragma warning restore 612, 618
         }
