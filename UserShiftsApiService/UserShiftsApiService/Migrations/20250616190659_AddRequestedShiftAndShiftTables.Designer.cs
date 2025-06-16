@@ -12,8 +12,8 @@ using UserShiftsApiService.Models;
 namespace UserShiftsApiService.Migrations
 {
     [DbContext(typeof(ShiftsSchedulingContext))]
-    [Migration("20250518214404_AddShiftAndShiftRequestTables")]
-    partial class AddShiftAndShiftRequestTables
+    [Migration("20250616190659_AddRequestedShiftAndShiftTables")]
+    partial class AddRequestedShiftAndShiftTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,7 +44,7 @@ namespace UserShiftsApiService.Migrations
 
                     b.HasIndex("UserShiftsPreferenceRequestId");
 
-                    b.ToTable("RequestedShift");
+                    b.ToTable("ShiftRequests");
                 });
 
             modelBuilder.Entity("UserShiftsApiService.Entities.ShiftEntity", b =>

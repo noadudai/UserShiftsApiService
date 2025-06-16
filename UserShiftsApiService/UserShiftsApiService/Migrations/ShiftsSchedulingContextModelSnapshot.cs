@@ -41,7 +41,7 @@ namespace UserShiftsApiService.Migrations
 
                     b.HasIndex("UserShiftsPreferenceRequestId");
 
-                    b.ToTable("RequestedShift");
+                    b.ToTable("ShiftRequests");
                 });
 
             modelBuilder.Entity("UserShiftsApiService.Entities.ShiftEntity", b =>
