@@ -10,6 +10,7 @@ public class ShiftsSchedulingContext : DbContext
     public DbSet<UserShiftsPreferenceRequestEntity> UserShiftPreferenceRequests { get; set; }
     public DbSet<RequestedShiftEntity> ShiftRequests { get; set; }
     public DbSet<ShiftEntity> Shifts { get; set; }
+    public DbSet<ShiftsSchedule> ShiftsSchedules { get; set; }
 
     public ShiftsSchedulingContext(DbContextOptions<ShiftsSchedulingContext> options)
         : base(options)
