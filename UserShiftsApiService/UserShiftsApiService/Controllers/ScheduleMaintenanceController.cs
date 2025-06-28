@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UserShiftsApiService.Middlewares;
 using UserShiftsApiService.Models;
 using UserShiftsApiService.Services;
 
@@ -19,9 +21,11 @@ public class ScheduleMaintenanceController : ControllerBase
 
     [HttpPost]
     [Route("create-schedule")]
-    public async Task<ActionResult> CreateNewShiftScheduleAsync(ShiftsScheduleModel shiftScheduleModel)
+    [Authorize]
+    [ServiceFilter<UserContextProviderMiddleware>]
+    public async Task<ActionResult> CreateNewShiftScheduleAsync(ScheduleModel schedule)
     {
-        await _managerActionsService.CreateNewShiftScheduleAsync(shiftScheduleModel);
+        await _managerActionsService.CreateNewShiftScheduleAsync(schedule);
         return Ok();
     }
 }

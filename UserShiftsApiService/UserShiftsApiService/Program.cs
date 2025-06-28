@@ -24,6 +24,7 @@ builder.Services.AddScoped<IAddNewUserScheduleRequestService, AddNewUserSchedule
 builder.Services.AddScoped<RequireHmacSignatureFilter>();
 builder.Services.AddScoped<IUserContextProvider, UserContextProvider>();
 builder.Services.AddScoped<IUserScheduleRequestService, UserScheduleRequestService>();
+builder.Services.AddScoped<IManagerActionsService, ManagerActionsService>();
 
 builder.Services.AddControllers();
 

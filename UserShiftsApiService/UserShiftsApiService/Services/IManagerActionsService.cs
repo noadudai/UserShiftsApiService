@@ -5,5 +5,5 @@ namespace UserShiftsApiService.Services;
 
 public interface IManagerActionsService
 {
-    Task CreateNewShiftScheduleAsync(ShiftsScheduleModel shiftsScheduleModel);
+    Task CreateNewShiftScheduleAsync(ScheduleModel schedule);
 }
