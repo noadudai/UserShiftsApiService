@@ -11,4 +11,5 @@ public class ShiftEntity
     public DateTime EndDate { get; set; }
     
     public string ScheduleId { get; set; }
+    public virtual ScheduleEntity Schedule { get; set; }
 }
