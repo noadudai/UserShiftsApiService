@@ -8,12 +8,12 @@ using UserShiftsApiService.Services;
 namespace UserShiftsApiService.Controllers;
 
 [ApiController]
-[Route("/manager-schedule-maintenance/")]
-public class ScheduleMaintenanceController : ControllerBase
+[Route("/manager-schedule-actions/")]
+public class ManagerScheduleActionsController : ControllerBase
 {
     private readonly IManagerActionsService _managerActionsService;
 
-    public ScheduleMaintenanceController(IManagerActionsService managerActionsService)
+    public ManagerScheduleActionsController(IManagerActionsService managerActionsService)
     {
         _managerActionsService = managerActionsService;
     }

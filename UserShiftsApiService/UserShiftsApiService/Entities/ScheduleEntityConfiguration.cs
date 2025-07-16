@@ -8,6 +8,10 @@ public class ScheduleEntityConfiguration :IEntityTypeConfiguration<ScheduleEntit
     public void Configure(EntityTypeBuilder<ScheduleEntity> builder)
     {
         builder.Property(p => p.CreationDate).IsRequired();
-        builder.Property(p => p.CreatedByManagerId).IsRequired();
+
+        builder.HasOne(p => p.Manager)
+            .WithMany()
+            .HasForeignKey(p => p.CreatedByManagerId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
