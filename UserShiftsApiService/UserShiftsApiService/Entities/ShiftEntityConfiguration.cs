@@ -15,5 +15,10 @@ public class ShiftEntityConfiguration : IEntityTypeConfiguration<ShiftEntity>
         builder.Property(p => p.ShiftType)
             .HasConversion(new EnumToStringConverter<ShiftType>())
             .IsRequired();
+        
+        builder.HasOne(p => p.Schedule)
+            .WithMany()
+            .HasForeignKey(p => p.ScheduleId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

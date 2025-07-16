@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using UserShiftsApiService.Entities;
+using UserShiftsApiService.Models;
+using UserShiftsApiService.UserContext;
+
+namespace UserShiftsApiService.Services;
+
+public class ManagerActionsService : IManagerActionsService
+{
+    private readonly ShiftsSchedulingContext _dbContext;
+    private readonly IUserContextProvider _userContextProvider;
+
+    
+    public ManagerActionsService(ShiftsSchedulingContext dbContext, IUserContextProvider userContextProvider)
+    {
+        _dbContext = dbContext;
+        _userContextProvider = userContextProvider;
+    }
+    
+    public async Task CreateNewShiftScheduleAsync(ScheduleModel schedule)
+    {
+        var newSchedule = new ScheduleEntity
+        {
+            Id = Guid.NewGuid().ToString(),
+            CreatedByManagerId = _userContextProvider.GetUserContext().UserId,
+            CreationDate = DateTime.UtcNow,
+        };
+
+        var shiftEntities = schedule.Shifts.Select(shift => new ShiftEntity
+        {
+            Id = Guid.NewGuid().ToString(),
+            ShiftType = shift.ShiftType,
+            StartDate = shift.ShiftStartTime,
+            EndDate = shift.ShiftEndTime,
+            ScheduleId = newSchedule.Id
+        });
+        
+        _dbContext.ShiftsSchedules.Add(newSchedule);
+        _dbContext.Shifts.AddRange(shiftEntities);
+        
+        await _dbContext.SaveChangesAsync();
+    }
+}
