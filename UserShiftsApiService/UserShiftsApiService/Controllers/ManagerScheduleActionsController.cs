@@ -28,4 +28,12 @@ public class ManagerScheduleActionsController : ControllerBase
         await _managerActionsService.CreateNewShiftScheduleAsync(schedule);
         return Ok();
     }
+    
+    [HttpGet]
+    [Route("get-last-schedule")]
+    public async Task<ActionResult> GetShiftsOfAScheduleAsync()
+    {
+        var schedulesAndShifts = await _managerActionsService.GetShiftsOfAScheduleAsync();
+        return Ok(schedulesAndShifts);
+    }
 }

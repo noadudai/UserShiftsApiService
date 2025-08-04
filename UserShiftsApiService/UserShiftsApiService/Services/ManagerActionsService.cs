@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using UserShiftsApiService.Entities;
 using UserShiftsApiService.Models;
 using UserShiftsApiService.UserContext;
@@ -42,5 +43,15 @@ public class ManagerActionsService : IManagerActionsService
         _dbContext.Shifts.AddRange(shiftEntities);
         
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<Dictionary<string, List<ShiftEntity>>> GetShiftsOfAScheduleAsync()
+    {
+        var schedulesAndShifts = await _dbContext
+            .Shifts
+            .GroupBy(shift => shift.ScheduleId)
+            .ToDictionaryAsync(group => group.Key, group => group.ToList());
+        
+        return schedulesAndShifts;
     }
 }
