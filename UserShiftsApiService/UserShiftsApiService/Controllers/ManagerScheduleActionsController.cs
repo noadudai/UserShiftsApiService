@@ -30,10 +30,10 @@ public class ManagerScheduleActionsController : ControllerBase
     }
     
     [HttpGet]
-    [Route("get-last-schedule")]
-    public async Task<ActionResult> GetShiftsOfAScheduleAsync()
+    [Route("get-all-schedules-and-shifts")]
+    public async Task<ActionResult> GetAllSchedulesAndShiftsAsync()
     {
-        var schedulesAndShifts = await _managerActionsService.GetShiftsOfAScheduleAsync();
+        var schedulesAndShifts = await _managerActionsService.GetAllSchedulesAndShiftsAsync();
         return Ok(schedulesAndShifts);
     }
 }

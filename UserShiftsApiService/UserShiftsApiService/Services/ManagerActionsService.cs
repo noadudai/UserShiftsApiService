@@ -45,13 +45,17 @@ public class ManagerActionsService : IManagerActionsService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<Dictionary<string, List<ShiftEntity>>> GetShiftsOfAScheduleAsync()
+    public async Task<SchedulesAndShiftsResponse> GetAllSchedulesAndShiftsAsync()
     {
-        var schedulesAndShifts = await _dbContext
-            .Shifts
-            .GroupBy(shift => shift.ScheduleId)
-            .ToDictionaryAsync(group => group.Key, group => group.ToList());
-        
-        return schedulesAndShifts;
+        var allSchedules = await _dbContext.ShiftsSchedules.ToListAsync();
+        var allShifts = await _dbContext.Shifts.ToListAsync();
+
+        var response = allSchedules.Select(schedule => new ScheduleAndShiftsModel
+        {
+            Schedule = schedule,
+            Shifts = allShifts.Where(shift => shift.ScheduleId == schedule.Id).ToList()
+        }).ToList();
+
+        return new SchedulesAndShiftsResponse { SchedulesAndShifts = response };
     }
 }
