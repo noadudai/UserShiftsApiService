@@ -21,7 +21,7 @@ public class ManagerActionsService : IManagerActionsService
         _userContextProvider = userContextProvider;
     }
     
-    public async Task CreateNewShiftScheduleAsync(ScheduleModel schedule)
+    public async Task CreateNewShiftScheduleAsync(NewScheduleModel schedule)
     {
         var newSchedule = new ScheduleEntity
         {
@@ -50,11 +50,15 @@ public class ManagerActionsService : IManagerActionsService
         var allSchedules = await _dbContext.ShiftsSchedules.ToListAsync();
         var allShifts = await _dbContext.Shifts.ToListAsync();
 
-        var response = allSchedules.Select(schedule => new ScheduleAndShiftsModel
-        {
-            Schedule = schedule,
-            Shifts = allShifts.Where(shift => shift.ScheduleId == schedule.Id).ToList()
-        }).ToList();
+        var response = await _dbContext.ShiftsSchedules.GroupJoin(
+            _dbContext.Shifts, 
+            schedule => schedule.Id,
+            shifts => shifts.ScheduleId,
+            (schedule, shifts) => new SchedulModel
+            {
+                Schedule = schedule,
+                Shifts = shifts.ToList()
+            }).ToListAsync();
 
         return new SchedulesAndShiftsResponse { SchedulesAndShifts = response };
     }

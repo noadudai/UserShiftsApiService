@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace UserShiftsApiService.Models;
 
-public class ScheduleModel
+public class NewScheduleModel
 {
     [JsonPropertyName("shifts")]
     public List<ShiftModel> Shifts { get; set; }
