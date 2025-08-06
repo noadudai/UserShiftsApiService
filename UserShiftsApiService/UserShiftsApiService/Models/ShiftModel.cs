@@ -6,9 +6,9 @@ namespace UserShiftsApiService.Models;
 
 public class ShiftModel
 {
-    public DateTime ShiftStartTime { get; set; }
-    public DateTime ShiftEndTime { get; set; }
+    public required DateTime ShiftStartTime { get; set; }
+    public required DateTime ShiftEndTime { get; set; }
     
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ShiftType ShiftType { get; set; }
+    public required ShiftType ShiftType { get; set; }
 }

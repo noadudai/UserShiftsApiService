@@ -47,19 +47,36 @@ public class ManagerActionsService : IManagerActionsService
 
     public async Task<SchedulesAndShiftsResponse> GetAllSchedulesAndShiftsAsync()
     {
-        var allSchedules = await _dbContext.ShiftsSchedules.ToListAsync();
-        var allShifts = await _dbContext.Shifts.ToListAsync();
-
-        var response = await _dbContext.ShiftsSchedules.GroupJoin(
+        var schedulesAndShiftsEntitties = await _dbContext.ShiftsSchedules.GroupJoin(
             _dbContext.Shifts, 
             schedule => schedule.Id,
             shifts => shifts.ScheduleId,
-            (schedule, shifts) => new ScheduleModel()
+            (schedule, shifts) => new 
             {
                 Schedule = schedule,
-                Shifts = shifts.ToList()
+                Shifts = shifts.ToList(),
             }).ToListAsync();
-
+        
+        var response = schedulesAndShiftsEntitties.Select(
+            group => new ScheduleResponseModel
+            {
+                Schedule = new ScheduleModel
+                    {
+                        Id = group.Schedule.Id, 
+                        CreationDate = group.Schedule.CreationDate, 
+                        CreatedByManagerId = group.Schedule.CreatedByManagerId
+                        
+                    }, 
+                Shifts = group.Shifts.Select
+                    (
+                        shift => new ShiftModel
+                        {
+                            ShiftStartTime = shift.StartDate, 
+                            ShiftEndTime = shift.EndDate, 
+                            ShiftType = shift.ShiftType
+                        }).ToArray()
+            }).ToList();
+        
         return new SchedulesAndShiftsResponse { SchedulesAndShifts = response };
     }
 }
