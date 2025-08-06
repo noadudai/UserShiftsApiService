@@ -21,7 +21,7 @@ public class ManagerActionsService : IManagerActionsService
         _userContextProvider = userContextProvider;
     }
     
-    public async Task CreateNewShiftScheduleAsync(NewScheduleModel schedule)
+    public async Task CreateNewShiftScheduleAsync(CreateNewScheduleModel schedule)
     {
         var newSchedule = new ScheduleEntity
         {
@@ -54,7 +54,7 @@ public class ManagerActionsService : IManagerActionsService
             _dbContext.Shifts, 
             schedule => schedule.Id,
             shifts => shifts.ScheduleId,
-            (schedule, shifts) => new SchedulModel
+            (schedule, shifts) => new ScheduleModel()
             {
                 Schedule = schedule,
                 Shifts = shifts.ToList()

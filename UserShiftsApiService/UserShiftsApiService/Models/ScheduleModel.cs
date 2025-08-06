@@ -3,7 +3,7 @@ using UserShiftsApiService.Entities;
 
 namespace UserShiftsApiService.Models;
 
-public record SchedulModel
+public record ScheduleModel
 {
     public required ScheduleEntity Schedule {get; set;}
     public List<ShiftEntity> Shifts {get; set;}

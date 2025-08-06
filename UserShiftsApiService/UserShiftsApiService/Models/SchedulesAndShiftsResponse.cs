@@ -4,5 +4,5 @@ namespace UserShiftsApiService.Models;
 
 public class SchedulesAndShiftsResponse
 {
-    public List<SchedulModel> SchedulesAndShifts { get; set; }
+    public List<ScheduleModel> SchedulesAndShifts { get; set; }
 }
