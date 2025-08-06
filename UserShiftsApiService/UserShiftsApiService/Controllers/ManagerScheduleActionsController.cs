@@ -23,9 +23,17 @@ public class ManagerScheduleActionsController : ControllerBase
     [Route("create-schedule")]
     [Authorize]
     [ServiceFilter<UserContextProviderMiddleware>]
-    public async Task<ActionResult> CreateNewShiftScheduleAsync(ScheduleModel schedule)
+    public async Task<ActionResult> CreateNewShiftScheduleAsync(CreateNewScheduleModel schedule)
     {
         await _managerActionsService.CreateNewShiftScheduleAsync(schedule);
         return Ok();
+    }
+    
+    [HttpGet]
+    [Route("schedules")]
+    public async Task<ActionResult<SchedulesResponseModel>> GetSchedulesAsync()
+    {
+        var schedules = await _managerActionsService.GetSchedulesAsync();
+        return Ok(schedules);
     }
 }

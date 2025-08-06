@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using System;
 
 namespace UserShiftsApiService.Models;
 
 public class ScheduleModel
 {
-    [JsonPropertyName("shifts")]
-    public List<ShiftModel> Shifts { get; set; }
+    public required string Id { get; set; }
+    public required DateTime CreationDate { get; set; }
+    public required string CreatedByManagerId  { get; set; }
 }
