@@ -31,9 +31,9 @@ public class ManagerScheduleActionsController : ControllerBase
     
     [HttpGet]
     [Route("schedules")]
-    public async Task<ActionResult<SchedulesResponseModel>> GetAllSchedulesAsync()
+    public async Task<ActionResult<SchedulesResponseModel>> GetSchedulesAsync()
     {
-        var schedules = await _managerActionsService.GetAllSchedulesAsync();
+        var schedules = await _managerActionsService.GetSchedulesAsync();
         return Ok(schedules);
     }
 }

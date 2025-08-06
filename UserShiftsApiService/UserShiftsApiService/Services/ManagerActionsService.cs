@@ -45,7 +45,7 @@ public class ManagerActionsService : IManagerActionsService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<SchedulesResponseModel> GetAllSchedulesAsync()
+    public async Task<SchedulesResponseModel> GetSchedulesAsync()
     {
         var schedules = await _dbContext.ShiftsSchedules.GroupJoin(
             _dbContext.Shifts, 
