@@ -45,9 +45,9 @@ public class ManagerActionsService : IManagerActionsService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<SchedulesAndShiftsResponse> GetAllSchedulesAndShiftsAsync()
+    public async Task<AllSchedulesResponse> GetAllSchedulesAsync()
     {
-        var schedulesAndShiftsEntitties = await _dbContext.ShiftsSchedules.GroupJoin(
+        var schedules = await _dbContext.ShiftsSchedules.GroupJoin(
             _dbContext.Shifts, 
             schedule => schedule.Id,
             shifts => shifts.ScheduleId,
@@ -57,7 +57,7 @@ public class ManagerActionsService : IManagerActionsService
                 Shifts = shifts.ToList(),
             }).ToListAsync();
         
-        var response = schedulesAndShiftsEntitties.Select(
+        var response = schedules.Select(
             group => new ScheduleResponseModel
             {
                 Schedule = new ScheduleModel
@@ -75,8 +75,8 @@ public class ManagerActionsService : IManagerActionsService
                             ShiftEndTime = shift.EndDate, 
                             ShiftType = shift.ShiftType
                         }).ToArray()
-            }).ToList();
+            }).ToArray();
         
-        return new SchedulesAndShiftsResponse { SchedulesAndShifts = response };
+        return new AllSchedulesResponse { Schedules = response };
     }
 }

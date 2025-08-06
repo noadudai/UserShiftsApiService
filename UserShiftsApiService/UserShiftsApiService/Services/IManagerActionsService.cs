@@ -8,5 +8,5 @@ namespace UserShiftsApiService.Services;
 public interface IManagerActionsService
 {
     Task CreateNewShiftScheduleAsync(CreateNewScheduleModel schedule);
-    Task<SchedulesAndShiftsResponse> GetAllSchedulesAndShiftsAsync();
+    Task<AllSchedulesResponse> GetAllSchedulesAsync();
 }
