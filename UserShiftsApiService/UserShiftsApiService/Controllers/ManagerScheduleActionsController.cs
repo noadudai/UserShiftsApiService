@@ -30,10 +30,10 @@ public class ManagerScheduleActionsController : ControllerBase
     }
     
     [HttpGet]
-    [Route("schedules")]
+    [Route("schedules-descending")]
     public async Task<ActionResult<SchedulesResponseModel>> GetSchedulesAsync()
     {
-        var schedules = await _managerActionsService.GetSchedulesAsync();
+        var schedules = await _managerActionsService.GetSchedulesDescendingAsync();
         return Ok(schedules);
     }
 }

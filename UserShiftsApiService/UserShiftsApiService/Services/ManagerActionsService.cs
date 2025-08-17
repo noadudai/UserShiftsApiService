@@ -45,7 +45,7 @@ public class ManagerActionsService : IManagerActionsService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<SchedulesResponseModel> GetSchedulesAsync()
+    public async Task<SchedulesResponseModel> GetSchedulesDescendingAsync()
     {
         var schedules = await _dbContext.ShiftsSchedules.GroupJoin(
             _dbContext.Shifts, 
@@ -75,7 +75,7 @@ public class ManagerActionsService : IManagerActionsService
                             ShiftEndTime = shift.EndDate, 
                             ShiftType = shift.ShiftType
                         }).ToArray()
-            }).ToArray();
+            }).OrderByDescending(group => group.Schedule.CreationDate).ToArray();
         
         return new SchedulesResponseModel { Schedules = response };
     }
