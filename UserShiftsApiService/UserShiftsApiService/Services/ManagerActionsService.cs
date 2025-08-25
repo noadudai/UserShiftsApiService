@@ -28,6 +28,7 @@ public class ManagerActionsService : IManagerActionsService
             Id = Guid.NewGuid().ToString(),
             CreatedByManagerId = _userContextProvider.GetUserContext().UserId,
             CreationDate = DateTime.UtcNow,
+            Status = schedule.Status,
         };
 
         var shiftEntities = schedule.Shifts.Select(shift => new ShiftEntity
