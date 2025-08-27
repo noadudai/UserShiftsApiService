@@ -38,6 +38,14 @@ public class ManagerScheduleActionsController : ControllerBase
         var schedules = await _managerActionsService.GetSchedulesAsync();
         return Ok(schedules);
     }
-    
-    
+
+    [HttpPost]
+    [Route("change-schedule-status")]
+    [Authorize]
+    [ServiceFilter<UserContextProviderMiddleware>]
+    public async Task<ActionResult> ChangeShiftScheduleStatusAsync(ChangeShiftsScheduleStatusModel schedule)
+    {
+        await _managerActionsService.ChangeShiftScheduleStatusAsync(schedule);
+        return Ok();
+    }
 }

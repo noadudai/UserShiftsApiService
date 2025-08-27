@@ -82,7 +82,7 @@ public class ManagerActionsService : IManagerActionsService
         return new SchedulesResponseModel { Schedules = response };
     }
 
-    public async Task MarkShiftScheduleAsPublishedAsync(ChangeShiftsScheduleStatusModel schedule)
+    public async Task ChangeShiftScheduleStatusAsync(ChangeShiftsScheduleStatusModel schedule)
     {
         var scheduleToChangeStatus = await _dbContext.ShiftsSchedules.SingleOrDefaultAsync(s => s.Id == schedule.ScheduleId);
         scheduleToChangeStatus.Status = schedule.Status;

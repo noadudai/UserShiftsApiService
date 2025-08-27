@@ -9,5 +9,5 @@ public interface IManagerActionsService
 {
     Task CreateNewShiftScheduleAsync(CreateNewScheduleModel schedule);
     Task<SchedulesResponseModel> GetSchedulesAsync();
-    Task MarkShiftScheduleAsPublishedAsync(ChangeShiftsScheduleStatusModel schedule);
+    Task ChangeShiftScheduleStatusAsync(ChangeShiftsScheduleStatusModel schedule);
 }
