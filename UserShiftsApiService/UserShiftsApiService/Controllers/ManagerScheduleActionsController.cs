@@ -31,9 +31,13 @@ public class ManagerScheduleActionsController : ControllerBase
     
     [HttpGet]
     [Route("schedules")]
+    [Authorize]
+    [ServiceFilter<UserContextProviderMiddleware>]
     public async Task<ActionResult<SchedulesResponseModel>> GetSchedulesAsync(ScheduleFetchingModel scheduleFetchingModel)
     {
         var schedules = await _managerActionsService.GetSchedulesAsync(scheduleFetchingModel);
         return Ok(schedules);
     }
+    
+    
 }
