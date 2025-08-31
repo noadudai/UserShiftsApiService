@@ -63,12 +63,12 @@ public class ManagerActionsService : IManagerActionsService
             group => new ScheduleResponseModel
             {
                 Schedule = new ScheduleModel
-                    {
-                        Id = group.Schedule.Id, 
-                        CreationDate = group.Schedule.CreationDate, 
-                        CreatedByManagerId = group.Schedule.CreatedByManagerId
-                        
-                    }, 
+                {
+                    Id = group.Schedule.Id,
+                    CreationDate = group.Schedule.CreationDate,
+                    CreatedByManagerId = group.Schedule.CreatedByManagerId,
+                    Status = group.Schedule.Status
+                }, 
                 Shifts = group.Shifts.Select
                     (
                         shift => new ShiftModel
