@@ -7,8 +7,8 @@ namespace UserShiftsApiService.Models;
 public class CreateNewScheduleModel
 {
     [JsonPropertyName("shifts")]
-    public ShiftModel[] Shifts { get; set; }
+    public required ShiftModel[] Shifts { get; set; }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ScheduleStatus Status { get; set; } = ScheduleStatus.Draft;
+    public required ScheduleStatus Status { get; set; }
 }
