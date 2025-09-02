@@ -95,7 +95,7 @@ public class ManagerActionsService : IManagerActionsService
 
     public async Task ChangeShiftScheduleStatusAsync(ChangeShiftsScheduleStatusModel schedule)
     {
-        var scheduleToChangeStatus = await _dbContext.ShiftsSchedules.SingleOrDefaultAsync(s => s.Id == schedule.ScheduleId);
+        var scheduleToChangeStatus = await _dbContext.ShiftsSchedules.SingleAsync(s => s.Id == schedule.ScheduleId);
         scheduleToChangeStatus.Status = schedule.Status;
         await _dbContext.SaveChangesAsync();
     }

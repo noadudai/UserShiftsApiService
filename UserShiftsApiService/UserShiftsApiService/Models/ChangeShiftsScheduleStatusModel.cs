@@ -8,5 +8,5 @@ public class ChangeShiftsScheduleStatusModel
     public required string ScheduleId { get; set; }
     
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ScheduleStatus Status { get; set; }
+    public required ScheduleStatus Status { get; set; }
 }
