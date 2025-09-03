@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using UserShiftsApiService.Entities;
 using UserShiftsApiService.Models;
@@ -28,6 +29,7 @@ public class ManagerActionsService : IManagerActionsService
             Id = Guid.NewGuid().ToString(),
             CreatedByManagerId = _userContextProvider.GetUserContext().UserId,
             CreationDate = DateTime.UtcNow,
+            Status = schedule.Status,
         };
 
         var shiftEntities = schedule.Shifts.Select(shift => new ShiftEntity
@@ -72,12 +74,12 @@ public class ManagerActionsService : IManagerActionsService
             group => new ScheduleResponseModel
             {
                 Schedule = new ScheduleModel
-                    {
-                        Id = group.Schedule.Id, 
-                        CreationDate = group.Schedule.CreationDate, 
-                        CreatedByManagerId = group.Schedule.CreatedByManagerId
-                        
-                    }, 
+                {
+                    Id = group.Schedule.Id,
+                    CreationDate = group.Schedule.CreationDate,
+                    CreatedByManagerId = group.Schedule.CreatedByManagerId,
+                    Status = group.Schedule.Status
+                }, 
                 Shifts = group.Shifts.Select
                     (
                         shift => new ShiftModel
@@ -89,5 +91,12 @@ public class ManagerActionsService : IManagerActionsService
             }).ToArray();
         
         return new SchedulesResponseModel { Schedules = response };
+    }
+
+    public async Task ChangeShiftScheduleStatusAsync(ChangeShiftsScheduleStatusModel schedule)
+    {
+        var scheduleToChangeStatus = await _dbContext.ShiftsSchedules.SingleAsync(s => s.Id == schedule.ScheduleId);
+        scheduleToChangeStatus.Status = schedule.Status;
+        await _dbContext.SaveChangesAsync();
     }
 }

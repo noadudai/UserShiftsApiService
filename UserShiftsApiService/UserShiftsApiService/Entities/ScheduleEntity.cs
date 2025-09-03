@@ -9,4 +9,5 @@ public class ScheduleEntity
     public DateTime CreationDate { get; set; }
     public string CreatedByManagerId { get; set; }
     public virtual UserEntity Manager { get; set; }
+    public ScheduleStatus Status { get; set; }
 }

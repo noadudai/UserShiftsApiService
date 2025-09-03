@@ -31,9 +31,21 @@ public class ManagerScheduleActionsController : ControllerBase
     
     [HttpGet]
     [Route("schedules")]
+    [Authorize]
+    [ServiceFilter<UserContextProviderMiddleware>]
     public async Task<ActionResult<SchedulesResponseModel>> GetSchedulesAsync(ScheduleFetchingModel scheduleFetchingModel)
     {
         var schedules = await _managerActionsService.GetSchedulesAsync(scheduleFetchingModel);
         return Ok(schedules);
+    }
+
+    [HttpPost]
+    [Route("change-schedule-status")]
+    [Authorize]
+    [ServiceFilter<UserContextProviderMiddleware>]
+    public async Task<ActionResult> ChangeShiftScheduleStatusAsync(ChangeShiftsScheduleStatusModel schedule)
+    {
+        await _managerActionsService.ChangeShiftScheduleStatusAsync(schedule);
+        return Ok();
     }
 }
