@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using UserShiftsApiService.Middlewares;
 using UserShiftsApiService.Models;
 using UserShiftsApiService.Services;
+using ChangeShiftsScheduleStatusModel = UserShiftsApiService.Models.ChangeShiftsScheduleStatusModel;
 
 namespace UserShiftsApiService.Controllers;
 
@@ -29,7 +30,7 @@ public class ManagerScheduleActionsController : ControllerBase
         return Ok();
     }
     
-    [HttpGet]
+    [HttpPost]
     [Route("schedules")]
     [Authorize]
     [ServiceFilter<UserContextProviderMiddleware>]
