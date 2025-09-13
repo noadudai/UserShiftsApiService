@@ -20,7 +20,7 @@ public class ManagerScheduleActionsController : ControllerBase
 
 
     [HttpPost]
-    [Route("create-schedule")]
+    [Route("create-shifts-schedule")]
     [Authorize]
     [ServiceFilter<UserContextProviderMiddleware>]
     public async Task<ActionResult> CreateNewShiftScheduleAsync(CreateNewScheduleModel schedule)
@@ -33,9 +33,9 @@ public class ManagerScheduleActionsController : ControllerBase
     [Route("schedules")]
     [Authorize]
     [ServiceFilter<UserContextProviderMiddleware>]
-    public async Task<ActionResult<SchedulesResponseModel>> GetSchedulesAsync(ScheduleFetchingModel scheduleFetchingModel)
+    public async Task<ActionResult<SchedulesResponseModel>> GetSchedulesAsync([FromQuery] ScheduleFetchingModel fetchingOptions)
     {
-        var schedules = await _managerActionsService.GetSchedulesAsync(scheduleFetchingModel);
+        var schedules = await _managerActionsService.GetSchedulesAsync(fetchingOptions);
         return Ok(schedules);
     }
 
