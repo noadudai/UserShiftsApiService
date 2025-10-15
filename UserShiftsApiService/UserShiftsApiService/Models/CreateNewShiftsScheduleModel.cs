@@ -4,7 +4,7 @@ using UserShiftsApiService.Entities;
 
 namespace UserShiftsApiService.Models;
 
-public class CreateNewScheduleModel
+public class CreateNewShiftsScheduleModel
 {
     [JsonPropertyName("shifts")]
     public required ShiftModel[] Shifts { get; set; }
