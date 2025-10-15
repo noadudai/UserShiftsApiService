@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using noadudai.schedule_generator_client.Model;
 
 namespace UserShiftsApiService.Entities;
 
@@ -13,4 +14,15 @@ public class ShiftEntity
     
     public string ScheduleId { get; set; }
     public virtual ScheduleEntity Schedule { get; set; }
+
+    public ShiftTypesEnum GetScheduleGeneratorClientShiftType()
+    {
+        if (!Enum.TryParse<ShiftTypesEnum>(ShiftType.ToString(), true, out var result))
+            throw new ArgumentException("Invalid Shift Type");
+        if (Enum.IsDefined(typeof(ShiftTypesEnum), result))
+        {
+            return result;
+        }
+        throw new ArgumentException("Invalid shift type");
+    }
 }
