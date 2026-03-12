@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:14-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-shiftsusers}
+
+  backend-csharp:
+    build:
+      context: ./backend-csharp
+      dockerfile: Dockerfile
+    ports:
+      - "5029:5029"
+    depends_on:
+      - postgres
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      Auth0__Domain: ${Auth0__Domain}
+      Auth0__Audience: ${Auth0__Audience}
+      Auth0__HMAC_SECRET: ${Auth0__HMAC_SECRET}
+      ConnectionStrings__DefaultConnection: ${ConnectionStrings__DefaultConnection:-Host=postgres;Port=5432;Database=shiftsusers;Username=postgres;Password=postgres}
+      FrontUrl: ${FrontUrl:-http://localhost:5173}
+
+  backend-python:
+    build:
+      context: ./backend-python
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend-csharp
+
+volumes:
+  pgdata:

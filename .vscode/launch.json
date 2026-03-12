@@ -1,0 +1,53 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C# API",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "dotnet: build C# API",
+      "program": "${workspaceFolder}/backend-csharp/UserShiftsApiService/bin/Debug/net9.0/UserShiftsApiService.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/backend-csharp/UserShiftsApiService",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5029"
+      }
+    },
+    {
+      "name": "Python Optimizer API",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["src.server.app:app", "--reload", "--port", "8000"],
+      "cwd": "${workspaceFolder}/backend-python",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend-python"
+      }
+    },
+    {
+      "name": "Frontend Dev Server",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/frontend/front",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        "pattern": "Local:.*http://localhost:([0-9]+)",
+        "uriFormat": "http://localhost:%s",
+        "action": "openExternally"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack",
+      "configurations": ["C# API", "Python Optimizer API", "Frontend Dev Server"],
+      "preLaunchTask": "Start postgres (detached)",
+      "stopAll": true
+    }
+  ]
+}

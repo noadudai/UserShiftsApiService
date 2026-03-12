@@ -1,0 +1,194 @@
+---
+description: Scheduling App monorepo — project map, how to run, env vars, Auth0/ngrok, and inter-service communication
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Scheduling App — Monorepo Guide
+
+## Project Overview
+
+A shift scheduling application for small businesses. Two user roles:
+- **Employees** — log in, submit vacation/time-off requests, view their schedule
+- **Managers** — manage employees, create schedules (using the Python optimizer), view/approve vacation requests
+
+## Repository Layout
+
+```
+(monorepo root)
+├── frontend/front/        React 18 + Vite + TypeScript SPA          → port 5173
+├── backend-csharp/        ASP.NET Core 9 REST API + PostgreSQL       → port 5029
+├── backend-python/        Python FastAPI + OR-Tools optimizer        → port 8000
+├── packages/
+│   └── scheduler-backend-client/   Auto-generated TypeScript axios client (local only, gitignored)
+├── scripts/
+│   └── check-and-regenerate-client.js   Regenerates the TypeScript client when openapi.json changes
+├── auth0/actions/
+│   └── save-new-user.js   Auth0 Post User Registration action script
+├── docker-compose.yml     Runs all 4 services (postgres, backend-csharp, backend-python, frontend)
+├── .vscode/tasks.json     Cursor/VS Code run tasks
+└── .env.example           All environment variables documented
+```
+
+## Service Details
+
+### frontend/ — React SPA (port 5173)
+- **Tech**: React 18, Vite, TypeScript, TailwindCSS, Auth0, TanStack Query
+- **Entry point**: `frontend/front/src/main.tsx`
+- **Routes**:
+  - `/` — Employee home: submit vacation requests, view upcoming vacations
+  - `/info` — Info/help page
+  - `/admin-panel/Overview` — Manager dashboard
+  - `/admin-panel/Employees` — Manage employees
+  - `/admin-panel/Scheduling` — Create schedules (triggers Python optimizer via C# API)
+  - `/admin-panel/Vacations` — View and manage all vacation requests
+- **API client**: `@noadudai/scheduler-backend-client` — auto-generated locally from the C# API's openapi.json, lives in `packages/scheduler-backend-client/` and is resolved via npm workspaces (no registry, no GitHub PAT needed)
+- **Auth**: Auth0 with JWT Bearer tokens
+
+### backend-csharp/ — ASP.NET Core API (port 5029)
+- **Tech**: .NET 9, Entity Framework Core, PostgreSQL (Npgsql), Auth0 JWT, Swashbuckle
+- **Entry point**: `backend-csharp/UserShiftsApiService/Program.cs`
+- **Solution file**: `backend-csharp/UserShiftsApiService.sln`
+- **Swagger UI**: `http://localhost:5029/swagger`
+- **Endpoints**:
+  - `POST /auth0-maintenance/save-new-user` — HMAC-signed; called by Auth0 Action to persist newly registered users
+  - `POST /manager-schedule-actions/create-schedule` — create a shift schedule (JWT required)
+  - `GET /manager-schedule-actions/schedules` — list schedules (JWT required)
+  - `POST /manager-schedule-actions/change-schedule-status` — update schedule status (JWT required)
+  - `POST /user-schedule-preferences-request/date-range-preference-request` — submit vacation request (JWT required)
+  - `POST /user-schedule-preferences-request/vacations-by-date-range` — query vacations by date range (JWT required)
+- **HMAC verification**: The `RequireHmacSignatureFilter` reads `Auth0:HMAC_SECRET` from config and verifies the `X-Signature` header on `/auth0-maintenance/` endpoints
+
+### backend-python/ — FastAPI Schedule Optimizer (port 8000)
+- **Tech**: Python, FastAPI, Google OR-Tools
+- **Entry point**: `backend-python/src/server/app.py`
+- **Swagger/docs**: `http://localhost:8000/docs`
+- **Endpoints**:
+  - `GET /create_and_get_schedule_options` — runs OR-Tools constraint solver, returns up to 100 valid schedule options with employee and shift metadata
+- **OpenAPI generation**: `python backend-python/generate_openapi.py` dumps the schema to stdout
+
+## How to Run
+
+### Option 1 — Docker Compose (all services)
+```bash
+cp .env.example .env   # fill in Auth0 values and HMAC_SECRET
+docker compose up --build
+```
+
+### Option 2 — Cursor Tasks (local dev, recommended)
+Open Command Palette (`Cmd+Shift+P`) → `Tasks: Run Task`:
+- **Start all (local dev)** — starts postgres in Docker + all 3 services locally in parallel
+- **Start C# API (local)** — `dotnet run` in `backend-csharp/UserShiftsApiService`
+- **Start Python API (local)** — `uvicorn src.server.app:app --reload --port 8000` in `backend-python`
+- **Start frontend (local)** — `npm run dev` in `frontend/front` (auto-regenerates API client if needed)
+- **Start postgres only** — `docker compose up postgres`
+- **Run DB migrations** — `dotnet ef database update`
+- **Force regenerate API client** — regenerates TypeScript client from current openapi.json
+
+### First-time setup
+```bash
+# 1. Set up environment variables
+cp .env.example .env   # then fill in Auth0 values
+
+# 2. Start postgres
+docker compose up postgres -d
+
+# 3. Run DB migrations
+cd backend-csharp/UserShiftsApiService && dotnet ef database update && cd ../..
+
+# 4. Set C# secrets (local dev only — do NOT put secrets in appsettings.json)
+cd backend-csharp/UserShiftsApiService
+dotnet user-secrets set "Auth0:Domain" "https://<your-tenant>.auth0.com/"
+dotnet user-secrets set "Auth0:Audience" "https://UsersShiftsApi/"
+dotnet user-secrets set "Auth0:HMAC_SECRET" "<your-hmac-secret>"
+cd ../..
+
+# 5. Set up Python virtualenv
+cd backend-python
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cd ..
+
+# 6. Copy frontend env vars
+cp frontend/.env.example frontend/front/.env   # fill in Auth0 values
+```
+
+## npm Client Auto-Regeneration
+
+The frontend consumes `@noadudai/scheduler-backend-client` which is generated locally from the C# API's `openapi.json`. It lives in `packages/scheduler-backend-client/` and is resolved via npm workspaces — no registry or GitHub PAT needed.
+
+**Requirements:** Docker must be running (used to run `openapitools/openapi-generator-cli` — no Java install needed).
+
+When you run `npm run dev` in `frontend/front/`, the `predev` script (`scripts/check-and-regenerate-client.js`) runs automatically:
+1. Hashes `backend-csharp/UserShiftsApiService/openapi.json`
+2. Compares to stored hash in `packages/scheduler-backend-client/.openapi-hash`
+3. If unchanged and `dist/` exists → skips (~50ms)
+4. If changed or missing → builds the C# project, runs openapi-generator-cli via Docker, rebuilds the package (~1-2 min first time, faster after Docker image is cached)
+
+To force regenerate: `Cmd+Shift+P → Tasks: Run Task → Force regenerate API client`
+
+## Environment Variables
+
+| Variable | Service | Description |
+|---|---|---|
+| `VITE_AUTH0DOMAIN` | frontend | Auth0 tenant domain (e.g. `https://dev-xxx.us.auth0.com/`) |
+| `VITE_AUTH0CLIENTID` | frontend | Auth0 SPA application Client ID |
+| `VITE_AUTH0AUDIENCE` | frontend | Auth0 API audience identifier |
+| `VITE_HOMEPAGEURL` | frontend | Redirect URI after Auth0 login |
+| `VITE_BACKEND_BASE_URL` | frontend | C# API base URL (e.g. `http://localhost:5029`) |
+| `Auth0__Domain` | backend-csharp | Same value as `VITE_AUTH0DOMAIN` |
+| `Auth0__Audience` | backend-csharp | Same value as `VITE_AUTH0AUDIENCE` |
+| `Auth0__HMAC_SECRET` | backend-csharp | Shared secret for verifying Auth0 Action HMAC signatures |
+| `ConnectionStrings__DefaultConnection` | backend-csharp | PostgreSQL connection string |
+| `FrontUrl` | backend-csharp | Frontend origin for CORS (`http://localhost:5173` locally) |
+| `POSTGRES_USER` | postgres | DB username (default: `postgres`) |
+| `POSTGRES_PASSWORD` | postgres | DB password (default: `postgres`) |
+| `POSTGRES_DB` | postgres | DB name (default: `shiftsusers`) |
+
+For local dev: use `dotnet user-secrets` for C# secrets; put frontend vars in `frontend/front/.env`.
+For Docker: all vars are loaded from the root `.env` file via `docker-compose.yml`.
+
+## Inter-Service Communication
+
+```
+User Browser
+  └─► frontend (5173)
+        └─► backend-csharp (5029)   [REST, JWT Bearer auth]
+              ├─► backend-python (8000)  [HTTP GET /create_and_get_schedule_options]
+              └─► PostgreSQL (5432)      [EF Core / Npgsql]
+
+Auth0
+  └─► ngrok tunnel
+        └─► backend-csharp (5029)   [POST /auth0-maintenance/save-new-user, HMAC-SHA256 signed]
+```
+
+## Auth0 Setup
+
+1. Create an Auth0 tenant at https://auth0.com
+2. **SPA Application**: create a Single Page Application → copy `Domain` and `Client ID` into `frontend/front/.env`
+3. **API**: create an API with identifier `https://UsersShiftsApi/` → copy identifier into both `frontend/front/.env` (`VITE_AUTH0AUDIENCE`) and the C# API config (`Auth0__Audience`)
+4. **Post User Registration Action**:
+   - Auth0 dashboard → Actions → Flows → Post User Registration → Add Action → Build from scratch
+   - Paste the script from `auth0/actions/save-new-user.js`
+   - Add two secrets:
+     - `HMAC_SECRET` — must exactly match `Auth0__HMAC_SECRET` in the C# API
+     - `API_URL` — your ngrok URL for local dev (see below), or production URL
+   - Deploy the action
+
+## ngrok Setup (local dev only)
+
+Auth0 Actions run in the cloud and cannot reach `localhost`. ngrok creates a public HTTPS tunnel to your local C# API so Auth0 can call it on new user registration.
+
+```bash
+ngrok http 5029
+# Example output: Forwarding  https://abc123.ngrok-free.app -> http://localhost:5029
+```
+
+After starting ngrok:
+1. Copy the HTTPS forwarding URL (e.g. `https://abc123.ngrok-free.app`)
+2. Auth0 dashboard → Actions → the Post User Registration action → Secrets tab
+3. Update `API_URL` to the new ngrok URL → Save
+4. No code change or action redeploy needed — the script reads `API_URL` at runtime
+
+> The ngrok URL changes on every restart. Repeat steps 1–3 each time you restart ngrok.
+> In production, set `API_URL` to your stable deployed URL once — no more ngrok needed.

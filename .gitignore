@@ -1,12 +1,31 @@
-
+# IDEs
 .idea/
+.DS_Store
 
+# .NET build output
 **/bin/
-
 **/obj/
+backend-csharp/UserShiftsApiService.sln.DotSettings.user
 
-UserShiftsApiService/UserShiftsApiService.sln.DotSettings.user
+# .NET generated OpenAPI spec (regenerated on build)
+backend-csharp/UserShiftsApiService/openapi.json
 
-UserShiftsApiService/node_modules/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
 
-UserShiftsApiService/UserShiftsApiService/openapi.json
+# Node / frontend
+node_modules/
+dist/
+.vite/
+frontend/front/.env
+
+# Generated local npm workspace package (created by predev script)
+packages/scheduler-backend-client/
+
+# Environment files — never commit real secrets
+.env
+# .env.example files ARE committed (they contain no secrets)
