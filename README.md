@@ -218,3 +218,21 @@ The frontend uses `@noadudai/scheduler-backend-client` — a TypeScript axios cl
 - If unchanged → skips and starts Vite immediately
 
 To manually force regeneration: `Cmd+Shift+P → Tasks: Run Task → Force regenerate API client`
+
+---
+
+## 👤 About the Author
+
+*Noa Dudai*  
+Full Stack Developer & Backend Engineer  
+Based in Israel 🇮🇱
+
+### 🌐 Connect with me
+
+<a href="https://github.com/noadudai" target="_blank">
+  <img src="https://img.icons8.com/?size=100&id=62856&format=png&color=FFFFFF" alt="GitHub" width="30" height="30">
+</a>
+&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/noadudai" target="_blank">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" width="30" height="30">
+</a>
