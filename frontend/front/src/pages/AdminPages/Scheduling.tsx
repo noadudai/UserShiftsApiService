@@ -7,7 +7,7 @@ import {
     ShiftMetadataWithEndDate,
 } from '../../components/ScheduleAndShiftsCreationComponents/Types.ts';
 import { useCreateNewShiftsSchedule, useQueryAllSchedulesDescending } from '../../apis.ts';
-import { CreateNewScheduleModel } from '@noadudai/scheduler-backend-client/dist/api';
+import { CreateNewScheduleModel, ScheduleStatus } from '@noadudai/scheduler-backend-client/api.ts';
 import { getNextWeeksDates } from '../../components/ScheduleAndShiftsCreationComponents/NextWeeksDates.ts';
 import { getScheduleInGivenDateRange } from '../../components/ScheduleAndShiftsCreationComponents/ScheduleIsForNextWeekCheck.ts';
 import { DAYS } from '../../components/ScheduleAndShiftsCreationComponents/Days.ts';
@@ -86,6 +86,7 @@ const Scheduling = () => {
                           shiftEndTime: shift.endDateAndTime.toISOString(),
                           shiftType: shift.shiftType,
                       })),
+                      status: ScheduleStatus.Draft,
                   };
 
                   mutation.mutate(data);
