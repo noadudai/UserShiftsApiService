@@ -1,0 +1,77 @@
+---
+description: Scheduling App monorepo — architecture, tech stack, how to run, and key concepts
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Scheduling App — Monorepo Guide
+
+## Project Overview
+
+A shift scheduling application for small businesses. Two user roles:
+- **Employees** — log in, submit vacation/time-off requests, view their schedule
+- **Managers** — manage employees, create schedules (using the Python optimizer), view/approve vacation requests
+
+## Repository Layout
+
+```
+(monorepo root)
+├── frontend/front/        React 18 + Vite + TypeScript SPA          → port 5173
+├── backend-csharp/        ASP.NET Core 9 REST API + PostgreSQL       → port 5029
+├── backend-python/        Python FastAPI + OR-Tools optimizer        → port 8000
+├── packages/
+│   └── scheduler-backend-client/   Auto-generated TypeScript axios client (local only, gitignored)
+├── scripts/
+│   └── check-and-regenerate-client.js   Regenerates the TypeScript client when openapi.json changes
+├── auth0/actions/
+│   └── save-new-user.auth0-action.template.js   Reference template — copy into Auth0 Post User Registration action
+├── docker-compose.yml     Runs all 4 services (postgres, backend-csharp, backend-python, frontend)
+├── .vscode/tasks.json     Cursor/VS Code run tasks
+└── .env.example           All environment variables documented
+```
+
+## Services
+
+### frontend/ — React SPA (port 5173)
+- **Tech**: React 18, Vite, TypeScript, TailwindCSS, Auth0, TanStack Query
+- **Entry point**: `frontend/front/src/main.tsx`
+- **API client**: `@noadudai/scheduler-backend-client` — auto-generated locally from the C# API's `openapi.json`, resolved via npm workspaces (no registry needed)
+- **Auth**: Auth0 with JWT Bearer tokens
+
+### backend-csharp/ — ASP.NET Core API (port 5029)
+- **Tech**: .NET 9, Entity Framework Core, PostgreSQL (Npgsql), Auth0 JWT, Swashbuckle
+- **Entry point**: `backend-csharp/UserShiftsApiService/Program.cs`
+- **Swagger UI**: `http://localhost:5029/swagger`
+
+### backend-python/ — FastAPI Schedule Optimizer (port 8000)
+- **Tech**: Python, FastAPI, Google OR-Tools
+- **Entry point**: `backend-python/src/server/app.py`
+- **Swagger/docs**: `http://localhost:8000/docs`
+
+## How to Run
+
+- **Docker Compose** (all services): `docker compose up --build` (copy `.env.example` → `.env` first)
+- **Local dev** (recommended): Cursor Command Palette → `Tasks: Run Task` → see `.vscode/tasks.json` for all available tasks
+
+## API Client Auto-Regeneration
+
+The frontend consumes `@noadudai/scheduler-backend-client`, generated locally from the C# API's `openapi.json` via `openapitools/openapi-generator-cli` (Docker-based, no Java needed). The `predev` script (`scripts/check-and-regenerate-client.js`) runs automatically before `npm run dev` and skips regeneration if the schema hasn't changed.
+
+## Inter-Service Communication
+
+```
+User Browser
+  └─► frontend (5173)
+        └─► backend-csharp (5029)   [REST, JWT Bearer auth]
+              ├─► backend-python (8000)  [HTTP, schedule optimization]
+              └─► PostgreSQL (5432)      [EF Core / Npgsql]
+
+Auth0
+  └─► ngrok tunnel (local dev)
+        └─► backend-csharp (5029)   [POST /auth0-maintenance/save-new-user, HMAC-SHA256 signed]
+```
+
+## Auth0 & ngrok
+
+- **Post User Registration**: Auth0 calls the C# API to persist newly registered users. The request is signed with HMAC-SHA256 (shared secret). The action script template is at `auth0/actions/save-new-user.auth0-action.template.js` — copy its contents into Auth0 dashboard → Actions → Post User Registration.
+- **ngrok** (local dev only): Auth0 runs in the cloud and cannot reach `localhost`. Run `ngrok http 5029` to get a public HTTPS tunnel and set it as the `API_URL` secret in the Auth0 action. The ngrok URL changes on every restart — update the Auth0 secret accordingly. In production, use a stable deployed URL instead.

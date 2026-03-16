@@ -1,0 +1,97 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start all (docker compose)",
+      "type": "shell",
+      "command": "docker compose up --build",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "new" }
+    },
+    {
+      "label": "Start postgres only",
+      "type": "shell",
+      "command": "docker compose up postgres",
+      "presentation": { "reveal": "always", "panel": "new" }
+    },
+    {
+      "label": "Stop all",
+      "type": "shell",
+      "command": "docker compose down",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "Start frontend (local)",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend/front"
+      },
+      "presentation": { "reveal": "always", "panel": "new" }
+    },
+    {
+      "label": "Start C# API (local)",
+      "type": "shell",
+      "command": "dotnet run",
+      "options": {
+        "cwd": "${workspaceFolder}/backend-csharp/UserShiftsApiService"
+      },
+      "presentation": { "reveal": "always", "panel": "new" }
+    },
+    {
+      "label": "Start Python API (local)",
+      "type": "shell",
+      "command": "uvicorn src.server.app:app --reload --port 8000",
+      "options": {
+        "cwd": "${workspaceFolder}/backend-python"
+      },
+      "presentation": { "reveal": "always", "panel": "new" }
+    },
+    {
+      "label": "Run DB migrations",
+      "type": "shell",
+      "command": "dotnet ef database update",
+      "options": {
+        "cwd": "${workspaceFolder}/backend-csharp/UserShiftsApiService"
+      },
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "Force regenerate API client",
+      "type": "shell",
+      "command": "node scripts/check-and-regenerate-client.js --force",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "Start postgres (detached)",
+      "type": "shell",
+      "command": "docker compose up postgres -d",
+      "presentation": { "reveal": "silent", "panel": "shared" }
+    },
+    {
+      "label": "dotnet: build C# API",
+      "type": "shell",
+      "command": "dotnet build",
+      "options": {
+        "cwd": "${workspaceFolder}/backend-csharp/UserShiftsApiService"
+      },
+      "group": "build",
+      "problemMatcher": "$msCompile",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "Start all (local dev)",
+      "dependsOn": [
+        "Start postgres only",
+        "Start C# API (local)",
+        "Start Python API (local)",
+        "Start frontend (local)"
+      ],
+      "dependsOrder": "parallel",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
