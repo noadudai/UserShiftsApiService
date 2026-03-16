@@ -179,7 +179,7 @@ uvicorn src.server.app:app --reload --port 8000
    - Set **Identifier** to `https://UsersShiftsApi/`
    - Copy identifier → `VITE_AUTH0AUDIENCE` and `Auth0__Audience`
 4. **Post User Registration Action**: Actions → Flows → Post User Registration → `+` → Build from scratch
-   - Paste the script from [`auth0/actions/save-new-user.js`](auth0/actions/save-new-user.js)
+   - Paste the script from [`auth0/actions/save-new-user.auth0-action.template.js`](auth0/actions/save-new-user.auth0-action.template.js)
    - Add **Secrets** (Secrets tab):
      - `HMAC_SECRET` — any random string; must exactly match `Auth0__HMAC_SECRET` in the C# config
      - `API_URL` — your ngrok URL (see below) for local dev, or your production URL in prod
