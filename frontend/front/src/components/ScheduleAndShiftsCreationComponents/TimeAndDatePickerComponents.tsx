@@ -4,13 +4,13 @@ import { timePickerTimeChangeHandler } from './TimePickerTimeChangeHandler.ts';
 
 export type TimePickerAndLabelProps = {
     label: string;
-    startTime?: Date;
+    time?: Date;
     setTimeCallback: (date: Date) => void;
 };
 
 export const TimePickerAndLabel = ({
     label,
-    startTime,
+    time,
     setTimeCallback,
 }: TimePickerAndLabelProps) => {
     return (
@@ -28,7 +28,7 @@ export const TimePickerAndLabel = ({
                         });
                     }
                 }}
-                value={startTime ? format(startTime, 'HH:mm') : ''}
+                value={time ? format(time, 'HH:mm') : ''}
             />
         </div>
     );

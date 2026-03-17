@@ -25,12 +25,12 @@ export const EditingShiftPane = ({
                 <div className="bg-white border rounded-xl border-gray-200 p-6 flex flex-col gap-3 items-center">
                     <TimePickerAndLabel
                         label={'Set shift starting time '}
-                        startTime={startDateAndTime}
+                        time={startDateAndTime}
                         setTimeCallback={(date: Date) => updateEditingShiftStartTime(date)}
                     />
                     <TimePickerAndLabel
                         label={'Set shift ending time '}
-                        startTime={endDateAndTime ?? undefined}
+                        time={endDateAndTime ?? undefined}
                         setTimeCallback={(date: Date) => updateEditingShiftEndDateAndTime(date)}
                     />
                     <button
