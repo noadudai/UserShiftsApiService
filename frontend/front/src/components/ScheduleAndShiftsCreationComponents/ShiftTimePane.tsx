@@ -10,7 +10,7 @@ export type ShiftTimePaneProps = {
 
 export const ShiftTimePane = ({ dayClickedInWeek, timeToRender, label }: ShiftTimePaneProps) => {
     return (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between w-full">
             {isSameDay(dayClickedInWeek, timeToRender) ? (
                 <ShiftTimeInfo
                     timingLabel={label}
