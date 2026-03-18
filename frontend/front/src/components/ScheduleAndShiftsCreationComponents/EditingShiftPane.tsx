@@ -1,4 +1,4 @@
-import { DateTimePickerAndLabel, TimePickerAndLabel } from './TimeAndDatePickerComponents.tsx';
+import { TimePickerAndLabel } from './TimeAndDatePickerComponents.tsx';
 import { ShiftMetadata } from './Types.ts';
 import { Guid } from 'guid-typescript';
 
@@ -25,13 +25,13 @@ export const EditingShiftPane = ({
                 <div className="bg-white border rounded-xl border-gray-200 p-6 flex flex-col gap-3 items-center">
                     <TimePickerAndLabel
                         label={'Set shift starting time '}
-                        startTime={startDateAndTime}
+                        time={startDateAndTime}
                         setTimeCallback={(date: Date) => updateEditingShiftStartTime(date)}
                     />
-                    <DateTimePickerAndLabel
-                        label={'Set shift ending shift '}
-                        endTime={endDateAndTime ?? undefined} // show the end time or nothing
-                        setDatetimeCallback={(date: Date) => updateEditingShiftEndDateAndTime(date)}
+                    <TimePickerAndLabel
+                        label={'Set shift ending time '}
+                        time={endDateAndTime ?? undefined}
+                        setTimeCallback={(date: Date) => updateEditingShiftEndDateAndTime(date)}
                     />
                     <button
                         className="disabled:bg-gray-300 disabled:text-gray-950 bg-custom-pastel-green p-2 text-center text-custom-cream rounded-xl items-center"
@@ -40,7 +40,7 @@ export const EditingShiftPane = ({
                             if (hasStartAndEndTime) {
                                 // shiftInSchedule.startDateAndTime has only the target date — time is irrelevant.
                                 // editingShift.startDateAndTime has only the target new time — date is irrelevant.
-                                // newEditingStartDateAndTime combine the target date and time
+                                // newEditingStartDateAndTime combines the target date and time.
                                 const newEditingStartDateAndTime = new Date(
                                     shiftInSchedule.startDateAndTime,
                                 );
@@ -52,10 +52,32 @@ export const EditingShiftPane = ({
                                 newEditingStartDateAndTime.setSeconds(0);
                                 newEditingStartDateAndTime.setMilliseconds(0);
 
+                                // End date starts from the same day as start. If end time is earlier
+                                // than start time, the shift crosses midnight so add one day.
+                                const newEditingEndDateAndTime = new Date(
+                                    shiftInSchedule.startDateAndTime,
+                                );
+
+                                newEditingEndDateAndTime.setHours(endDateAndTime.getHours());
+                                newEditingEndDateAndTime.setMinutes(endDateAndTime.getMinutes());
+                                newEditingEndDateAndTime.setSeconds(0);
+                                newEditingEndDateAndTime.setMilliseconds(0);
+
+                                const isOvernightShift =
+                                    endDateAndTime.getHours() < startDateAndTime.getHours() ||
+                                    (endDateAndTime.getHours() === startDateAndTime.getHours() &&
+                                        endDateAndTime.getMinutes() < startDateAndTime.getMinutes());
+
+                                if (isOvernightShift) {
+                                    newEditingEndDateAndTime.setDate(
+                                        newEditingEndDateAndTime.getDate() + 1,
+                                    );
+                                }
+
                                 saveEditingShiftDateAndTimesToScheduleCallBack(
                                     id,
                                     newEditingStartDateAndTime,
-                                    endDateAndTime,
+                                    newEditingEndDateAndTime,
                                 );
                             }
                         }}

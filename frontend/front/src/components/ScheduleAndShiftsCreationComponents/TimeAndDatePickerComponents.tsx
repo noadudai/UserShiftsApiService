@@ -1,23 +1,16 @@
 import TimePicker from 'react-time-picker';
 import { format } from 'date-fns';
 import { timePickerTimeChangeHandler } from './TimePickerTimeChangeHandler.ts';
-import DateTimePicker from 'react-datetime-picker';
 
 export type TimePickerAndLabelProps = {
     label: string;
-    startTime?: Date;
+    time?: Date;
     setTimeCallback: (date: Date) => void;
-};
-
-export type DateTimePickerAndLabelProps = {
-    label: string;
-    endTime?: Date;
-    setDatetimeCallback: (date: Date) => void;
 };
 
 export const TimePickerAndLabel = ({
     label,
-    startTime,
+    time,
     setTimeCallback,
 }: TimePickerAndLabelProps) => {
     return (
@@ -35,31 +28,7 @@ export const TimePickerAndLabel = ({
                         });
                     }
                 }}
-                value={startTime ? format(startTime, 'HH:mm') : ''}
-            />
-        </div>
-    );
-};
-
-export const DateTimePickerAndLabel = ({
-    label,
-    endTime,
-    setDatetimeCallback,
-}: DateTimePickerAndLabelProps) => {
-    return (
-        <div>
-            <label>{label}</label>
-            <DateTimePicker
-                onChange={(date) => {
-                    if (date) {
-                        setDatetimeCallback(date);
-                    }
-                }}
-                value={endTime}
-                className="border border-custom-cream-warm bg-custom-cream p-2 text-xs w-40"
-                disableClock={true}
-                calendarIcon={null}
-                clearIcon={null}
+                value={time ? format(time, 'HH:mm') : ''}
             />
         </div>
     );
