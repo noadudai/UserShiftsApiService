@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+    ChangeShiftsScheduleStatusModel,
     ManagerScheduleActionsApi,
     NullableOfOrder,
     UserDateRangePreferenceRequestModel,
@@ -41,13 +42,44 @@ export const useCreateNewShiftsSchedule = () => {
     });
 };
 
+export const useChangeScheduleStatus = () => {
+    const { getAccessTokenSilently } = useAuth0();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (data: ChangeShiftsScheduleStatusModel) => {
+            const token = await getAccessTokenSilently();
+
+            const response = await managerActionsApi.managerScheduleActionsChangeScheduleStatusPost(
+                data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+
+            return response;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['allSchedules'] });
+        },
+    });
+};
+
 export const useQueryAllSchedulesDescending = () => {
+    const { getAccessTokenSilently, isLoading: isAuth0Loading } = useAuth0();
+
     return useQuery({
         queryKey: ['allSchedules'],
+        enabled: !isAuth0Loading,
         queryFn: async () => {
-            const response = await managerActionsApi.managerScheduleActionsSchedulesGet({
-                creationTimeOrder: NullableOfOrder.Descending,
-            });
+            const token = await getAccessTokenSilently();
+
+            const response = await managerActionsApi.managerScheduleActionsSchedulesGet(
+                { creationTimeOrder: NullableOfOrder.Descending },
+                { headers: { Authorization: `Bearer ${token}` } },
+            );
             return response.data;
         },
     });

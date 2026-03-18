@@ -78,6 +78,7 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
 }
 
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSwagger();
