@@ -16,8 +16,8 @@ export const ShiftTimeInfo = ({
 }) => {
     return (
         <>
-            <p className="items-center text-black">{timingLabel} at</p>
-            <div className="bg-custom-cream w-20 p-1 rounded-lg text-xs text-center">
+            <p className="text-black text-xs">{timingLabel} at</p>
+            <div className="bg-custom-cream w-14 p-0.5 rounded-lg text-xs text-center">
                 {timeToRepresent}
             </div>
         </>
