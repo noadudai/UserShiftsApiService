@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { IoIosCheckmark } from 'react-icons/io';
 import { Guid } from 'guid-typescript';
 import { ShiftScheduleGrid } from './ScheduleAndShiftsCreationComponents/ShiftScheduleGrid.tsx';
 import { IoClose } from 'react-icons/io5';
 import { ShiftMetadata, AllShiftTypes } from './ScheduleAndShiftsCreationComponents/Types.ts';
 import { EditingShiftPane } from './ScheduleAndShiftsCreationComponents/EditingShiftPane.tsx';
+import { MdOutlineCampaign, MdSave } from 'react-icons/md';
 
 type WeeklyShiftCreatorPanelProps = {
     onClose: () => void;
@@ -12,6 +12,7 @@ type WeeklyShiftCreatorPanelProps = {
     shiftsSchedule: ShiftMetadata[];
     nextWeeksDayDates: Date[];
     onSubmitSchedule?: () => void;
+    onPublishSchedule?: () => void;
     mode: 'edit' | 'view';
 };
 
@@ -21,6 +22,7 @@ const WeeklyShiftPanel = ({
     shiftsSchedule,
     nextWeeksDayDates,
     onSubmitSchedule,
+    onPublishSchedule,
     mode,
 }: WeeklyShiftCreatorPanelProps) => {
     const [editingShift, setEditingShift] = useState<ShiftMetadata | undefined>(undefined);
@@ -73,13 +75,22 @@ const WeeklyShiftPanel = ({
                     mode={mode}
                 />
                 {isEditMode && (
-                    <button
-                        className="bg-custom-pastel-green text-center text-custom-cream rounded-full disabled:bg-gray-300 disabled:text-gray-950"
-                        disabled={onSubmitSchedule === undefined}
-                        onClick={onSubmitSchedule}
-                    >
-                        <IoIosCheckmark size={40} />
-                    </button>
+                    <div className="flex gap-3">
+                        <button
+                            className="bg-custom-pastel-green text-center text-custom-cream rounded-full p-1 disabled:bg-gray-300 disabled:text-gray-950"
+                            disabled={onSubmitSchedule === undefined}
+                            onClick={onSubmitSchedule}
+                        >
+                            <MdSave size={40} />
+                        </button>
+                        <button
+                            className="bg-custom-pastel-green text-center text-custom-cream rounded-full p-1 disabled:bg-gray-300 disabled:text-gray-950"
+                            disabled={onPublishSchedule === undefined}
+                            onClick={onPublishSchedule}
+                        >
+                            <MdOutlineCampaign size={40} />
+                        </button>
+                    </div>
                 )}
                 {editingShift && (
                     <EditingShiftPane
