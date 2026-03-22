@@ -2,7 +2,6 @@ import axios from 'axios';
 import {
     ChangeShiftsScheduleStatusModel,
     ManagerScheduleActionsApi,
-    NullableOfOrder,
     UserDateRangePreferenceRequestModel,
     UserScheduleRequestApi,
 } from '@noadudai/scheduler-backend-client/api.ts';
@@ -16,6 +15,7 @@ const ax = axios.create({
 
 const api = new UserScheduleRequestApi(undefined, undefined, ax);
 const managerActionsApi = new ManagerScheduleActionsApi(undefined, undefined, ax);
+const ALL_SCHEDULES_QUERY_KEY = ['allSchedules'] as const;
 
 export const useCreateNewShiftsSchedule = () => {
     const { getAccessTokenSilently } = useAuth0();
@@ -37,7 +37,7 @@ export const useCreateNewShiftsSchedule = () => {
             return response;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['allSchedules'] });
+            queryClient.invalidateQueries({ queryKey: ALL_SCHEDULES_QUERY_KEY });
         },
     });
 };
@@ -62,7 +62,7 @@ export const useChangeScheduleStatus = () => {
             return response;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['allSchedules'] });
+            queryClient.invalidateQueries({ queryKey: ALL_SCHEDULES_QUERY_KEY });
         },
     });
 };
@@ -71,15 +71,19 @@ export const useQueryAllSchedulesDescending = () => {
     const { getAccessTokenSilently, isLoading: isAuth0Loading } = useAuth0();
 
     return useQuery({
-        queryKey: ['allSchedules'],
+        queryKey: ALL_SCHEDULES_QUERY_KEY,
         enabled: !isAuth0Loading,
         queryFn: async () => {
             const token = await getAccessTokenSilently();
-
             const response = await managerActionsApi.managerScheduleActionsSchedulesGet(
-                { creationTimeOrder: NullableOfOrder.Descending },
-                { headers: { Authorization: `Bearer ${token}` } },
+                'Descending',
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
             );
+
             return response.data;
         },
     });
