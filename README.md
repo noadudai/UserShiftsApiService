@@ -184,6 +184,11 @@ uvicorn src.server.app:app --reload --port 8000
      - `HMAC_SECRET` — any random string; must exactly match `Auth0__HMAC_SECRET` in the C# config
      - `API_URL` — your ngrok URL (see below) for local dev, or your production URL in prod
    - Click **Deploy**
+5. **Post Login Action**: Actions → Flows → Login → `+` → Build from scratch
+   - Paste the script from [`auth0/actions/add-role-claims.auth0-action.template.js`](auth0/actions/add-role-claims.auth0-action.template.js)
+   - Add **Secrets** (Secrets tab):
+     - `API_AUDIENCE` — your Auth0 API identifier, must match `VITE_AUTH0AUDIENCE` and `Auth0__Audience`
+   - Click **Deploy**
 
 ### ngrok (local dev only)
 
