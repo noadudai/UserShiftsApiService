@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,8 +21,11 @@ builder.Services.AddDbContext<ShiftsSchedulingContext>(options =>
 });
 
 builder.Services.AddScoped<IAuth0UserManagementService, Auth0UserManagementService>();
+builder.Services.AddScoped<IAuth0UserRoleService, Auth0UserRoleService>();
 builder.Services.AddScoped<IAddNewUserScheduleRequestService, AddNewUserScheduleRequestService>();
 builder.Services.AddScoped<RequireHmacSignatureFilter>();
+builder.Services.AddScoped<RequireManagerDbRoleFilter>();
+builder.Services.AddScoped<IAuthorizationHandler, ManagerRoleAuthorizationHandler>();
 builder.Services.AddScoped<IUserContextProvider, UserContextProvider>();
 builder.Services.AddScoped<IUserScheduleRequestService, UserScheduleRequestService>();
 builder.Services.AddScoped<IManagerActionsService, ManagerActionsService>();
@@ -41,7 +45,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     options.RequireHttpsMetadata = false;
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ManagerOnly", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.AddRequirements(new ManagerRoleRequirement());
+    });
+});
 
 // Restrict the code paths that will run when the apps entry point is being invoked from build-time document generation.
 if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
@@ -78,6 +89,7 @@ if (Assembly.GetEntryAssembly()?.GetName().Name != "GetDocument.Insider")
 }
 
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSwagger();

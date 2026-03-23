@@ -1,49 +1,70 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
+using UserShiftsApiService.Entities;
 using UserShiftsApiService.Models;
+using UserShiftsApiService.Services;
 using UserShiftsApiService.UserContext;
 
 namespace UserShiftsApiService.Middlewares;
 
-public class UserContextProviderMiddleware : IAsyncActionFilter
+public class UserContextProviderMiddleware : IAsyncAuthorizationFilter, IOrderedFilter
 {
+    private readonly IAuth0UserRoleService _auth0UserRoleService;
     private readonly IUserContextProvider _contextProvider;
     private readonly ShiftsSchedulingContext _shiftsSchedulingContext;
+    public int Order => int.MinValue;
 
-    public UserContextProviderMiddleware(IUserContextProvider contextProvider, ShiftsSchedulingContext shiftsSchedulingContext)
+    public UserContextProviderMiddleware(
+        IAuth0UserRoleService auth0UserRoleService,
+        IUserContextProvider contextProvider,
+        ShiftsSchedulingContext shiftsSchedulingContext)
     {
+        _auth0UserRoleService = auth0UserRoleService;
         _contextProvider = contextProvider;
         _shiftsSchedulingContext = shiftsSchedulingContext;
     }
 
-    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
-        var authSub = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var authSub = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? context.HttpContext.User.FindFirst("sub")?.Value;
 
-        if (!string.IsNullOrEmpty(authSub))
+        if (string.IsNullOrEmpty(authSub))
         {
-            var user = _shiftsSchedulingContext.Users.FirstOrDefault(u => u.AuthSub == authSub);
+            context.Result = new UnauthorizedResult();
+            return;
+        }
 
-            if (user != null)
-            {
-                var userContext = new UserContext.UserContext(){UserId = user.Id};
-                _contextProvider.SetUserContext(userContext); 
-            }
-            else
-            {
-                throw new KeyNotFoundException("User not found");
-            }
-        }
-        else
+        var user = await _shiftsSchedulingContext.Users.FirstOrDefaultAsync(u => u.AuthSub == authSub);
+
+        if (user == null)
         {
-            throw new AuthenticationException("Unauthenticated user");
+            context.Result = new UnauthorizedResult();
+            return;
         }
-        
-        await next();
+
+        var claimRole = _auth0UserRoleService.GetAppRole(context.HttpContext.User);
+        if (user.Role != claimRole)
+        {
+            user.Role = claimRole;
+            await _shiftsSchedulingContext.SaveChangesAsync();
+        }
+
+        var displayName = context.HttpContext.User.Identity?.Name
+            ?? context.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value
+            ?? context.HttpContext.User.FindFirst("name")?.Value
+            ?? user.Email;
+
+        _contextProvider.SetUserContext(new UserContext.UserContext
+        {
+            UserId = user.Id,
+            Email = user.Email,
+            DisplayName = displayName,
+            Role = user.Role,
+        });
     }
 }
