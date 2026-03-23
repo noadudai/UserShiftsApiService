@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UserShiftsApiService.ActionFilters;
 using UserShiftsApiService.Middlewares;
 using UserShiftsApiService.Models;
 using UserShiftsApiService.Services;
@@ -21,8 +22,9 @@ public class ManagerScheduleActionsController : ControllerBase
 
     [HttpPost]
     [Route("create-schedule")]
-    [Authorize]
+    [Authorize(Policy = "ManagerOnly")]
     [ServiceFilter<UserContextProviderMiddleware>]
+    [ServiceFilter<RequireManagerDbRoleFilter>]
     public async Task<ActionResult> CreateNewShiftScheduleAsync(CreateNewScheduleModel schedule)
     {
         await _managerActionsService.CreateNewShiftScheduleAsync(schedule);
@@ -31,8 +33,9 @@ public class ManagerScheduleActionsController : ControllerBase
     
     [HttpGet]
     [Route("schedules")]
-    [Authorize]
+    [Authorize(Policy = "ManagerOnly")]
     [ServiceFilter<UserContextProviderMiddleware>]
+    [ServiceFilter<RequireManagerDbRoleFilter>]
     public async Task<ActionResult<SchedulesResponseModel>> GetSchedulesAsync(ScheduleFetchingModel scheduleFetchingModel)
     {
         var schedules = await _managerActionsService.GetSchedulesAsync(scheduleFetchingModel);
@@ -41,8 +44,9 @@ public class ManagerScheduleActionsController : ControllerBase
 
     [HttpPost]
     [Route("change-schedule-status")]
-    [Authorize]
+    [Authorize(Policy = "ManagerOnly")]
     [ServiceFilter<UserContextProviderMiddleware>]
+    [ServiceFilter<RequireManagerDbRoleFilter>]
     public async Task<ActionResult> ChangeShiftScheduleStatusAsync(ChangeShiftsScheduleStatusModel schedule)
     {
         await _managerActionsService.ChangeShiftScheduleStatusAsync(schedule);

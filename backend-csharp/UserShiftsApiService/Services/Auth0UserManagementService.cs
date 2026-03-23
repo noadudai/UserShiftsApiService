@@ -26,6 +26,10 @@ public class Auth0UserManagementService : IAuth0UserManagementService
                 AuthSub = auth0UserModel.UserId,
                 Email = auth0UserModel.UserEmail,
                 Id = Guid.NewGuid().ToString(),
+                // New Auth0 users are created as employees by default.
+                // Manager access is assigned manually in Auth0 for now, and can later
+                // be updated from the future employee-management UI.
+                Role = UserRole.Employee,
             });
             
             await _dbContext.SaveChangesAsync();
