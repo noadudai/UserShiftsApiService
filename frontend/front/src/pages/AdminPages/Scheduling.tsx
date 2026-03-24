@@ -11,6 +11,11 @@ import { CreateNewScheduleModel, ScheduleStatus } from '@noadudai/scheduler-back
 import { getNextWeeksDates } from '../../components/ScheduleAndShiftsCreationComponents/NextWeeksDates.ts';
 import { getScheduleInGivenDateRange } from '../../components/ScheduleAndShiftsCreationComponents/ScheduleIsForNextWeekCheck.ts';
 import { DAYS } from '../../components/ScheduleAndShiftsCreationComponents/Days.ts';
+import SchedulingPageButton from '../../components/ScheduleAndShiftsCreationComponents/SchedulingPageButton.tsx';
+import {
+    getNextWeeksScheduleButtonState,
+    getNextWeeksShiftsButtonState,
+} from '../../components/ScheduleAndShiftsCreationComponents/SchedulingButtonStates.ts';
 
 const Scheduling = () => {
     const nextWeeksDayDates: Date[] = getNextWeeksDates();
@@ -96,37 +101,36 @@ const Scheduling = () => {
             : undefined;
 
     const today = new Date();
-    const todayIsWednesday = today.getDay() == DAYS.WEDNESDAY;
+    const todayIsWednesday = today.getDay() === DAYS.WEDNESDAY;
     const todayIsNotYetWednesday = today.getDay() < DAYS.WEDNESDAY;
+    const todayIsThursday = today.getDay() === DAYS.THURSDAY;
+    const todayIsFriday = today.getDay() === DAYS.FRIDAY;
+    const hasScheduleForNextWeek = scheduleForNextWeek !== undefined;
+    const workingScheduleIsPublished = false;
+
+    const nextWeeksShiftsButtonState = getNextWeeksShiftsButtonState({
+        hasScheduleForNextWeek,
+        todayIsNotYetWednesday,
+        todayIsWednesday,
+    });
+    const nextWeeksScheduleButtonState = getNextWeeksScheduleButtonState({
+        hasScheduleForNextWeek,
+        todayIsThursday,
+        todayIsFriday,
+        workingScheduleIsPublished,
+    });
 
     return (
         <div className="flex items-center justify-center gap-4 p-2">
-            <div className="p-5 group relative">
-                <button
-                    className={`rounded-lg bg-custom-cream-warm group-hover:bg-custom-cream-warm/80 transition-colors p-4 border-2
-                        ${
-                            scheduleForNextWeek
-                                ? `border-custom-pastel-green`
-                                : todayIsNotYetWednesday
-                                  ? `border-orange-400`
-                                  : todayIsWednesday
-                                    ? `border-custom-warm-coral-pink`
-                                    : ``
-                        }`}
-                    onClick={() => setIsWeeklyShiftPanelOpen(true)}
-                >
-                    Next Week's Shifts
-                </button>
-                <div className="opacity-0 group-hover:opacity-100 transition-all text-xs">
-                    {scheduleForNextWeek
-                        ? ''
-                        : todayIsNotYetWednesday
-                          ? "Create next week's shifts"
-                          : todayIsWednesday
-                            ? "Last day to create next week's shifts!!"
-                            : ''}
-                </div>
-            </div>
+            <SchedulingPageButton
+                label="Next Week's Shifts"
+                onClick={() => setIsWeeklyShiftPanelOpen(true)}
+                state={nextWeeksShiftsButtonState}
+            />
+            <SchedulingPageButton
+                label="Next Week's Schedule"
+                state={nextWeeksScheduleButtonState}
+            />
 
             {isWeeklyShiftPanelOpen && (
                 <WeeklyShiftPanel
