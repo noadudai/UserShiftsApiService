@@ -51,25 +51,21 @@ const SchedulingPageButton = ({
             <div className="opacity-0 group-hover:opacity-100 transition-all text-xs">
                 {label === "Next Week's Shifts"
                     ? hasScheduleForNextWeek
-                        ? ''
+                        ? ""
                         : day < DAYS.WEDNESDAY
                           ? "Create next week's shifts"
                           : day === DAYS.WEDNESDAY
                             ? "Last day to create next week's shifts!!"
-                            : ''
+                            : ""
                     : workingScheduleIsPublished
-                      ? ''
-                      : !hasScheduleForNextWeek && day !== DAYS.THURSDAY && day !== DAYS.FRIDAY
-                        ? 'create the shifts schedule first'
-                        : day === DAYS.FRIDAY
-                          ? "Last day to create next week's schedule!!"
-                          : hasScheduleForNextWeek
-                            ? day === DAYS.THURSDAY
-                                ? "Create next week's schedule"
-                                : ''
-                            : day === DAYS.THURSDAY
-                              ? "Create next week's schedule"
-                              : ''}
+                      ? ""
+                      : !hasScheduleForNextWeek
+                        ? "create the shifts schedule first"
+                        : day === DAYS.THURSDAY
+                          ? "Create next week's schedule"
+                          : day === DAYS.FRIDAY
+                            ? "Last day to create next week's schedule!!"
+                            : ""}
             </div>
         </div>
     );
