@@ -75,3 +75,7 @@ Auth0
 
 - **Post User Registration**: Auth0 calls the C# API to persist newly registered users. The request is signed with HMAC-SHA256 (shared secret). The action script template is at `auth0/actions/save-new-user.auth0-action.template.js` — copy its contents into Auth0 dashboard → Actions → Post User Registration.
 - **ngrok** (local dev only): Auth0 runs in the cloud and cannot reach `localhost`. Run `ngrok http 5029` to get a public HTTPS tunnel and set it as the `API_URL` secret in the Auth0 action. The ngrok URL changes on every restart — update the Auth0 secret accordingly. In production, use a stable deployed URL instead.
+
+## AI change scope
+
+- Do not optimize or refactor unless the user asks or it is strictly necessary for the requested change.
