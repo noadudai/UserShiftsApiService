@@ -11,7 +11,7 @@ const VacationsPanel = () => {
 
     return (
         <div>
-            <h1 className="flex justify-center text-2xl font-opensans">My Vacations</h1>
+            <h1 className="text-center text-2xl font-opensans">My Vacations</h1>
             <UserVacationsPage />
             <div className="flex justify-between ">
                 <div className="place-self-start flex gap-1 p-2">
