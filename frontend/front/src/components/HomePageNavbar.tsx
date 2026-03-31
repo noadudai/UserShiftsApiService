@@ -2,9 +2,11 @@ import { LogoutOptions, useAuth0 } from '@auth0/auth0-react';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Link } from 'react-router-dom';
+import { useQueryCurrentUser } from '../apis.ts';
 
 export const HomePageNavbar = () => {
     const { logout } = useAuth0();
+    const { data: currentUser } = useQueryCurrentUser();
 
     return (
         <div>
@@ -18,10 +20,12 @@ export const HomePageNavbar = () => {
                             Keep On Time Shifts
                         </h1>
                     </div>
-                    <div className="flex gap-4">
-                        <Link className="text-custom-cream" to="admin-panel/Overview">
-                            Overview
-                        </Link>
+                    <div className="flex items-center gap-4 text-custom-cream">
+                        {currentUser?.role === 'Manager' ? (
+                            <Link className="text-custom-cream" to="/admin-panel/Overview">
+                                Overview
+                            </Link>
+                        ) : null}
                         <button
                             onClick={() =>
                                 logout({
