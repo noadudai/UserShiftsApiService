@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using UserShiftsApiService.Entities;
 using UserShiftsApiService.Models;
@@ -98,5 +96,22 @@ public class ManagerActionsService : IManagerActionsService
         var scheduleToChangeStatus = await _dbContext.ShiftsSchedules.SingleAsync(s => s.Id == schedule.ScheduleId);
         scheduleToChangeStatus.Status = schedule.Status;
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<EmployeesResponseModel> GetEmployeesAsync()
+    {
+        var employees = await _dbContext.Users
+            .Select(user => new EmployeeModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Role = user.Role,
+            })
+            .ToArrayAsync();
+
+        return new EmployeesResponseModel
+        {
+            Employees = employees,
+        };
     }
 }
